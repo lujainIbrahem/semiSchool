@@ -1,10 +1,6 @@
 export * from "./db.repo"
 export * from "./user.repo"
 export * from "./otp.repo"
-export * from "./brand.repo"
-export * from "./category.repo"
-export * from "./subCategory.repo"
-export * from "./product.repo"
-export * from "./cart.repo"
-export * from "./coupon.repo"
-export * from "./order.repo"
+export * from "./revokeToken.repo"
+
+

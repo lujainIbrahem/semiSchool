@@ -1,18 +1,22 @@
     
 import { MongooseModule, Prop, Schema, SchemaFactory, Virtual } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { UserGenderEnum, UserProviderEnum, UserRoleEnum } from 'src/common/enums';
+import { bloodType, GenderType, specializationType,UserRoleEnum } from 'src/common/enums';
 import type{ HOtpDocument } from './otp.model';
 import { Hash } from 'src/utils';
+import { IAvailableTime } from 'src/common/interfaces';
 
 @Schema({timestamps:true, toObject:{virtuals:true}, toJSON:{virtuals:true},strictQuery:true})
 
 export class User {
-  @Prop({type:String,required:true,minlength:2,trim:true})
+
+ @Prop({ type: String, minlength: 2, trim: true })
   fName: string;
-  @Prop({type:String,required:true,minlength:2,trim:true})
+
+  @Prop({ type: String, minlength: 2, trim: true })
   lName: string;
-  @Virtual({
+
+   @Virtual({
     get(){
         return `${this.fName} ${this.lName}`
     },
@@ -22,24 +26,75 @@ export class User {
     }
   })
   userName: string;
-  @Prop({type:Number,min:18,max:60, required: true })
-  age: number;
-  @Prop({type:String,required:true,unique:true,trim:true})
+
+  @Prop({ type: String, required: true, unique: true, trim: true })
   email: string;
-  @Prop({type:String, trim:true,required: true})
+
+  @Prop({ type: String, trim: true, required: true })
   password: string;
-  @Prop({type:Boolean})
-  confirmed: boolean; 
-  @Prop({type:String, enum:UserGenderEnum, default:UserGenderEnum.male})
-  gender: UserGenderEnum;
-  @Prop({type:String, enum:UserRoleEnum, default:UserRoleEnum.user})
+
+  @Prop({ type: Boolean, default: false })
+  confirmed: boolean;
+
+  @Prop({ type: String, enum: GenderType })
+  gender: GenderType;
+
+  @Prop({ type: String, enum: UserRoleEnum, required: true })
   role: UserRoleEnum;
-  @Prop({type :[{type:Types.ObjectId, ref:"Product"}]})
-  wishList: Types.ObjectId[];
-  @Prop({type:Date,default:Date.now})
+
+  @Prop({ type: String })
+  address: string;
+
+  @Prop({ type: String })
+  phone: string;
+
+  @Prop({ type: Date, default: Date.now })
   changeCredentails: Date;
-  @Prop({type:String, enum:UserProviderEnum, default:UserProviderEnum.system})
-  provider: UserProviderEnum;
+
+ // Doctor fields
+  @Prop({ type: String, enum: specializationType })
+  specialization: specializationType;
+
+  @Prop([
+    {
+      day: String,
+      start: String,
+      end: String,
+    },
+  ])
+  availableTime: IAvailableTime[];
+
+  // Patient fields
+  @Prop({ type: String, enum: bloodType })
+  blood: bloodType;
+
+  @Prop({ type: String })
+  disease: string;
+
+  @Prop({ type: Number, min: 10, max: 80 })
+  age: number;
+
+  @Prop({ type: String })
+  currentMedication: string;
+
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  doctorId: Types.ObjectId;
+
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  companionId: Types.ObjectId;
+
+
+  // Companion fields
+  @Prop({ type: String })
+  relationPatient: string;
+
+  @Prop({ type: String })
+  experienceLevel: string;
+
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  patientId: Types.ObjectId;
+
+
   @Virtual()
   otp:HOtpDocument[]
 }
@@ -55,7 +110,7 @@ UserSchema.virtual("otp",{
 
 export const UserModel = MongooseModule.forFeatureAsync([
   {
-    name: User.name,
+   name:User.name,
     useFactory:()=>{
       UserSchema.pre("save",async function (next) {
         if(this.isModified("password")){

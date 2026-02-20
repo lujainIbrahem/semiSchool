@@ -4,7 +4,6 @@ import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
 import { JwtPayload } from "jsonwebtoken";
 import { UserTokenTypeEnum } from "../enums";
 
-
 @Injectable()
 export class TokenService {
     constructor(
@@ -26,25 +25,30 @@ export class TokenService {
     return  this.jwtService.verifyAsync( token ,options) 
 }
 
-
 GetSignature =async (prefix: string, tokenType: UserTokenTypeEnum = UserTokenTypeEnum.access) => {
 
 if(tokenType ===UserTokenTypeEnum.access)
-    {if (prefix == "user"){
-return process.env.ACCESS_TOKEN_USER}
+    {if (prefix == "doctor"){
+return process.env.ACCESS_TOKEN_DOCTOR}
 
-else if(prefix =="admin"){
-  return process.env.ACCESS_TOKEN_ADMIN
+else if(prefix =="patient"){
+  return process.env.ACCESS_TOKEN_PATIENT
+}
+else if(prefix =="companion"){
+  return process.env.ACCESS_TOKEN_COMPANION
 }
 else{return null}
     }
 
 if(tokenType ===UserTokenTypeEnum.refresh)
-    {if (prefix == "user"){
-return process.env.REFRESH_TOKEN_USER}
+    {if (prefix == "doctor"){
+return process.env.REFRESH_TOKEN_DOCTOR}
 
-else if(prefix =="admin"){
-  return process.env.REFRESH_TOKEN_ADMIN
+else if(prefix =="patient"){
+  return process.env.REFRESH_TOKEN_PATIENT
+}
+else if(prefix =="companion"){
+  return process.env.REFRESH_TOKEN_COMPANION
 }
 else{return null}
     }

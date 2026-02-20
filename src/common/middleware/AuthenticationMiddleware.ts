@@ -1,5 +1,3 @@
-
-
 import { BadRequestException, Injectable, NestMiddleware } from '@nestjs/common';
 import {  Response, NextFunction } from 'express';
 import { TokenService } from '../service/token.service';
@@ -12,7 +10,6 @@ export const tokenType =(typeToken:UserTokenTypeEnum=UserTokenTypeEnum.access)=>
     next()
     }
 }
-
 
 @Injectable()
 export class AuthenticationMiddleware implements NestMiddleware {
@@ -35,14 +32,12 @@ if(!signature){
 }
 
 const decoded = await this.tokenService.decodedAndFetched(token,signature)
-
 req.user =decoded?.user
 req.decoded =decoded?.decoded
-
    return next();
   }   
  catch (error) {
-        throw new BadRequestException(error.message);
+  throw new BadRequestException(error.message);
 
 }
   }
