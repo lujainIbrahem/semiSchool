@@ -5,8 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { CacheModule } from '@nestjs/cache-manager';
-import { profileModule } from './module/user/profile.module';
-import { UserModule } from './module/auth/user.module';
+import { profileModule } from './module/profile/profile.module';
+import { UserModule } from './module/user/user.module';
 
 @Module({
   imports: [ConfigModule.forRoot({

@@ -1,5 +1,5 @@
 import { OmitType, PartialType } from "@nestjs/mapped-types";
-import { signUpDTO } from "../auth/signUpDTO";
+import { signUpDTO } from "../user/signUpDTO";
 import { IsMongoId, IsNotEmpty, IsOptional, IsStrongPassword, ValidateIf } from "class-validator";
 import { IsMatch } from "src/common";
 
