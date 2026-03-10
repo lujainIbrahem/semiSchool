@@ -7,6 +7,10 @@ import { Connection } from 'mongoose';
 import { CacheModule } from '@nestjs/cache-manager';
 import { profileModule } from './module/profile/profile.module';
 import { UserModule } from './module/user/user.module';
+import { availableTimeModule } from './module/availableTime/availableTime.module';
+import { appointmentModule } from './module/appointment/appointment.module';
+import { seedDataModule } from './seedData/seedData.module';
+import { authModule } from './module/auth/auth.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -23,7 +27,14 @@ MongooseModule.forRoot(process.env.MONGO_URL as string, {
     return connection;
   },
 }),
-UserModule,profileModule
+
+UserModule,
+profileModule,
+availableTimeModule,
+appointmentModule,
+seedDataModule,
+authModule
+
 
 
 ],

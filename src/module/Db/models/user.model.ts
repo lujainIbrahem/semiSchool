@@ -1,28 +1,25 @@
-    
+
 import { MongooseModule, Prop, Schema, SchemaFactory, Virtual } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { bloodType, GenderType, specializationType,UserRoleEnum } from 'src/common/enums';
-import type{ HOtpDocument } from './otp.model';
+import { bloodType, GenderType, specializationType, userProvider, UserRoleEnum } from 'src/common/enums';
+import type { HOtpDocument } from './otp.model';
 import { Hash } from 'src/utils';
-import { IAvailableTime } from 'src/common/interfaces';
 
-@Schema({timestamps:true, toObject:{virtuals:true}, toJSON:{virtuals:true},strictQuery:true})
+@Schema({ timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true }, strictQuery: true })
 
 export class User {
 
- @Prop({ type: String, minlength: 2, trim: true })
+  @Prop({ type: String, required: true, minlength: 2, trim: true })
   fName: string;
-
-  @Prop({ type: String, minlength: 2, trim: true })
+  @Prop({ type: String, required: true, minlength: 2, trim: true })
   lName: string;
-
-   @Virtual({
-    get(){
-        return `${this.fName} ${this.lName}`
+  @Virtual({
+    get() {
+      return `${this.fName} ${this.lName}`
     },
-    set(v){
-        this.fName= v.split(' ')[0]
-        this.lName= v.split(' ')[0]
+    set(v) {
+      this.fName = v.split(' ')[0]
+      this.lName = v.split(' ')[0]
     }
   })
   userName: string;
@@ -51,18 +48,15 @@ export class User {
   @Prop({ type: Date, default: Date.now })
   changeCredentails: Date;
 
- // Doctor fields
+  @Prop({ type: String, enum: userProvider, default: userProvider.system })
+  provider: string;
+
+  // Doctor fields
   @Prop({ type: String, enum: specializationType })
   specialization: specializationType;
 
-  @Prop([
-    {
-      day: String,
-      start: String,
-      end: String,
-    },
-  ])
-  availableTime: IAvailableTime[];
+  @Prop({ type: Number })
+  price: number;
 
   // Patient fields
   @Prop({ type: String, enum: bloodType })
@@ -83,7 +77,6 @@ export class User {
   @Prop({ type: Types.ObjectId, ref: 'User' })
   companionId: Types.ObjectId;
 
-
   // Companion fields
   @Prop({ type: String })
   relationPatient: string;
@@ -96,30 +89,29 @@ export class User {
 
 
   @Virtual()
-  otp:HOtpDocument[]
+  otp: HOtpDocument[]
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-export type HUserDocument =HydratedDocument<User>
+export type HUserDocument = HydratedDocument<User>
 
-UserSchema.virtual("otp",{
-  ref:"Otp",
-  localField:"_id",
-  foreignField:"createdBy"
+UserSchema.virtual("otp", {
+  ref: "Otp",
+  localField: "_id",
+  foreignField: "createdBy"
 })
 
 export const UserModel = MongooseModule.forFeatureAsync([
   {
-   name:User.name,
-    useFactory:()=>{
-      UserSchema.pre("save",async function (next) {
-        if(this.isModified("password")){
-        this.password = await Hash({plainText:this.password});
+    name: User.name,
+    useFactory: () => {
+      UserSchema.pre("save", async function (next) {
+        if (this.isModified("password")) {
+          this.password = await Hash({ plainText: this.password });
         }
         next()
       })
-    
-    return UserSchema
-  }
- }])
- 
+
+      return UserSchema
+    }
+  }])

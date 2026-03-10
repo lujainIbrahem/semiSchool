@@ -31,7 +31,7 @@ export class profileService {
   //======================== getProfile =====================
 
   async getProfile(req: UserReq) {
-    const user = await this.userRepo.findById(req.user._id)
+const user = await this.userRepo.findById(req.user._id, "-password");
     if (!user) {
       throw new BadRequestException("user not found")
     }
@@ -44,19 +44,15 @@ export class profileService {
   //======================== getProfileId =====================
 
   async getprofileId(req: UserReq, params: profileDTO) {
-    const user = await this.userRepo.findById(params.id) //patient
+    const user = await this.userRepo.findById(params.id , "-password" ) //patient
     if (!user) {
       throw new BadRequestException("user not found")
     }
 
-    if (req.user.role === UserRoleEnum.Doctor &&
-      user.doctorId.toString() !== req.user._id.toString()
-    ) {
+    if (req.user.role === UserRoleEnum.Doctor &&   user.doctorId?.toString() !== req.user._id.toString()) {
       throw new ForbiddenException("Not allowed");
     }
-    else if (req.user.role === UserRoleEnum.Companion &&
-      user.companionId.toString() !== req.user._id.toString()
-    ) {
+    else if (req.user.role === UserRoleEnum.Companion &&user.companionId?.toString() !== req.user._id.toString()) {
       throw new ForbiddenException("Not allowed");
     }
 
@@ -69,7 +65,7 @@ export class profileService {
   async updateProfile(req: UserReq, body: updateProfileDTO) {
     const { email, oldPassword, newPassword, ...profile } = body
 
-    const user = await this.userRepo.findById(req.user._id)
+    const user = await this.userRepo.findById(req.user._id , "-password")
     if (!user) {
       throw new BadRequestException("user not found")
     }
@@ -105,7 +101,7 @@ export class profileService {
 
   async updateProfileId(req: UserReq, body: updateProfileIdDTO, params: profileDTO) {
     const { ...profile } = body
-    const user = await this.userRepo.findById(params.id)
+    const user = await this.userRepo.findById(params.id, "-password")
     if (!user) {
       throw new BadRequestException("user not found")
     }

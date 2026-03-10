@@ -1,6 +1,6 @@
 import { TokenService } from '../../common/service/token.service';
 import { BadRequestException, ConflictException, ForbiddenException, Injectable } from '@nestjs/common';
-import { OtpRepo, revokeTokenRepo, UserRepo } from '../Db';
+import { availableTimeRepo, OtpRepo, revokeTokenRepo, UserRepo } from '../Db';
 import { confirmEmailDTO, forgetPasswordDTO, loginDTO, logOutDTO, resendOtpDTO, resetPasswordDTO, signUpDTO, updatePasswordDTO } from './signUpDTO';
 import { flagType, GenderType, UserOtp, UserRoleEnum } from 'src/common/enums';
 import { generateOTP } from 'src/common';
@@ -15,6 +15,7 @@ export class UserService {
     private readonly OtpRepo: OtpRepo,
     private tokenService: TokenService,
     private readonly revokeTokenRepo: revokeTokenRepo,
+    private readonly availableTimeRepo: availableTimeRepo,
 
   ) { }
 
@@ -32,8 +33,8 @@ export class UserService {
   //======================== signUp =====================
 
   async signUp(body: signUpDTO) {
-    const { userName, password, email, age, gender, phone, specialization, availableTime
-      , currentMedication, disease, address, blood, role,
+    const { fName,lName,userName, password, email, age, gender, phone, specialization
+      , currentMedication, disease, address, blood, role,price,
       patientId, relationPatient, experienceLevel, doctorId, companionId } = body
 
     const userExist = await this.userRepo.findOne({ email })
@@ -44,6 +45,7 @@ export class UserService {
     let user;
     if (role == UserRoleEnum.Doctor) {
       user = await this.userRepo.create({
+        fName,lName,
         userName,
         password,
         email,
@@ -52,7 +54,9 @@ export class UserService {
         phone,
         specialization,
         address,
-        availableTime
+        price
+
+
       })
     }
     else if (role == UserRoleEnum.Patient) {
@@ -75,6 +79,7 @@ export class UserService {
         }
       }
       user = await this.userRepo.create({
+         fName,lName,
         userName,
         password,
         email,
@@ -101,6 +106,7 @@ export class UserService {
         }
       }
       user = await this.userRepo.create({
+        fName,lName,
         userName,
         password,
         email,
@@ -303,7 +309,7 @@ export class UserService {
   }
 
 
-  //======================== logOut =====================
+  //======================== logOut ====================
 
   async logOut(body: logOutDTO, req: UserReq) {
     const { flag } = body

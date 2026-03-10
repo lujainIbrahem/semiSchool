@@ -16,11 +16,9 @@ export class RoleValidationPipe implements PipeTransform {
       if (!value.specialization) {
         throw new BadRequestException('Specialization required for doctor');
       }
-
-      if (!value.availableTime || value.availableTime.length === 0) {
-        throw new BadRequestException('availableTime required for doctor');
+    if (!value.price) {
+        throw new BadRequestException('price required for doctor');
       }
-
       if (value.disease || value.currentMedication || value.blood || value.age ||
           value.doctorId || value.companionId || value.patientId) {
         throw new BadRequestException('Doctor cannot have patient/companion fields');
@@ -34,8 +32,8 @@ export class RoleValidationPipe implements PipeTransform {
         throw new BadRequestException('Missing required patient fields');
       }
 
-      if (value.specialization || value.availableTime) {
-        throw new BadRequestException('Patient cannot have doctor fields');
+      if (value.specialization) {
+        throw new BadRequestException("Patient cann't have specialization");
       }
     }
 

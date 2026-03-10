@@ -7,9 +7,12 @@ export enum UserRoleEnum {
     Doctor = "Doctor",
     Patient = "Patient", 
     Companion = "Companion", 
-
+  }
+export enum userProvider  {
+   
+   system ="system",
+   google ="google"
 }
-
 export enum specializationType {
   InternalMedicineSpecialty = "الباطنة العامة",
   cardiologySpecialty = "أمراض القلب",
@@ -37,4 +40,9 @@ export enum bloodType {
 export enum flagType{
   All="All",
   current="current"
+}
+
+export enum statusType{
+  confirmed="confirmed",
+  cancelled="cancelled"
 }
