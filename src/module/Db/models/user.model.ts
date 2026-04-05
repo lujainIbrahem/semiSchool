@@ -27,8 +27,14 @@ export class User {
   @Prop({ type: String, required: true, unique: true, trim: true })
   email: string;
 
-  @Prop({ type: String, trim: true, required: true })
+  @Prop({ type: String, trim: true, required: function(){
+    return this.provided === userProvider.system
+  } })
   password: string;
+  
+  @Prop({ type: String, enum: userProvider, default: userProvider.system })
+  provider: string;
+
 
   @Prop({ type: Boolean, default: false })
   confirmed: boolean;
@@ -48,8 +54,6 @@ export class User {
   @Prop({ type: Date, default: Date.now })
   changeCredentails: Date;
 
-  @Prop({ type: String, enum: userProvider, default: userProvider.system })
-  provider: string;
 
   // Doctor fields
   @Prop({ type: String, enum: specializationType })

@@ -12,17 +12,14 @@ export class AuthService {
   ) {}
 
  async loginWithGmail(idToken: string, role: UserRoleEnum) {
-    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
     // 1. التعديل الأول: أضفنا await قبل الـ client.verifyIdToken
-    const ticket = await client.verifyIdToken({
-      idToken,
-      audience: [
-        process.env.GOOGLE_CLIENT_ID!, // علامة ! بتقول لـ TS إن القيمة موجودة
-        "407408718192.apps.googleusercontent.com"
-      ],
-    });
+   const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
+const ticket = await client.verifyIdToken({
+  idToken,
+  audience: process.env.GOOGLE_CLIENT_ID, // خليها نفس الـ Client ID
+});
     const payload = ticket.getPayload();
     if (!payload) {
       throw new UnauthorizedException('Invalid Google Token');
@@ -40,10 +37,11 @@ export class AuthService {
     }
 
     // ====================== check if user exists ======================
-    let user = await this.userRepo.findOne({ email });
-    
+
+      let user = await this.userRepo.findOne({ email });
+
     if (!user) {
-        console.log("Creating user in DB...");
+      // ✅ Create new user
       user = await this.userRepo.create({
         fName: given_name,
         lName: family_name,
@@ -53,16 +51,15 @@ export class AuthService {
         provider: userProvider.google,
         role: role,
       });
-
+    } else {
+      // ✅ لو موجود
+      if (user.provider !== userProvider.google) {
+        throw new BadRequestException(
+          "This email is registered via system. Please login with your password."
+        );
+      }
     }
-  else{
-        return { message: 'user already exist' };
 
-    }
-
-    if (user.provider !== userProvider.google) {
-      throw new BadRequestException('This email is registered via system. Please login with your password.');
-    }
 
     // ====================== generate JWTs ======================
 

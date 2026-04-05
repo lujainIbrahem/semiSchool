@@ -13,6 +13,8 @@ export enum userProvider  {
    system ="system",
    google ="google"
 }
+
+
 export enum specializationType {
   InternalMedicineSpecialty = "الباطنة العامة",
   cardiologySpecialty = "أمراض القلب",
