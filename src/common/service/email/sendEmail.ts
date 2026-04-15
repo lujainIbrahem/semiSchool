@@ -1,35 +1,26 @@
 import nodemailer from "nodemailer";
-import Mail from "nodemailer/lib/mailer";
 
+export const sendEmail = async (mailOptions) => {
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+    tls: {
+      rejectUnauthorized: false, // 👈 رجعناها هنا عشان نكسر المشكلة
+    },
+  });
 
+  const info = await transporter.sendMail({
+from: '"Shefaa App" <appsafaa804@gmail.com>',
+    ...mailOptions,
+  });
 
-export const sendEmail = async (mailOptions: Mail.Options) => {
-  try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASS,
-      },
-    });
-
-    const info = await transporter.sendMail({
-      from: `"lojy" <${process.env.EMAIL}>`,
-      ...mailOptions,
-    });
-
-    return info.accepted.length > 0;
-  } catch (error) {
-    console.error("Email error:", error);
-    return false; // بدل ما السيرفر يقع
-  }
+  return info.accepted.length > 0;
 };
-
-
-
-
 export const generateOTP = async () => {
     return Math.floor(Math.random() * (999999 - 100000 + 1) + 100000)
 }

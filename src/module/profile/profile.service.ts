@@ -25,7 +25,7 @@ export class profileService {
       createdBy: userId,
       expireAt: new Date(Date.now() + 60 * 1000)
     })
-
+    return otp
   }
 
   //======================== getProfile =====================
