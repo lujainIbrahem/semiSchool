@@ -1,33 +1,35 @@
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 
-export const sendEmail = async (mailOptions: Mail.Options)=>{
-    
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
- port: 465,
-secure: true,// يجب أن تكون false مع port 587
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.PASS, 
-  },
-  tls: {
-    rejectUnauthorized: false // هذا السطر يحل مشاكل شهادات الأمان والـ socket
-  }
-});
 
-  const info = await transporter.sendMail({
-from: `"lojy" <${process.env.EMAIL}>`,
-    ...mailOptions
-  });
-  if (info.accepted.length>0){
-    return true
-  }
-  else{
-    return false
-  }
 
+export const sendEmail = async (mailOptions: Mail.Options) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASS,
+      },
+    });
+
+    const info = await transporter.sendMail({
+      from: `"lojy" <${process.env.EMAIL}>`,
+      ...mailOptions,
+    });
+
+    return info.accepted.length > 0;
+  } catch (error) {
+    console.error("Email error:", error);
+    return false; // بدل ما السيرفر يقع
+  }
 };
+
+
+
+
 export const generateOTP = async () => {
     return Math.floor(Math.random() * (999999 - 100000 + 1) + 100000)
 }
