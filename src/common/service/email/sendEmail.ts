@@ -5,8 +5,8 @@ export const sendEmail = async (mailOptions: Mail.Options)=>{
     
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // يجب أن تكون false مع port 587
+ port: 465,
+secure: true,// يجب أن تكون false مع port 587
   auth: {
     user: process.env.EMAIL,
     pass: process.env.PASS, 
