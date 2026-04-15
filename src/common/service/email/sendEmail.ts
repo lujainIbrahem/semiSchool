@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 });
 
   const info = await transporter.sendMail({
-    from: `"lojy" ${process.env.EMAIL}`,
+from: `"lojy" <${process.env.EMAIL}>`,
     ...mailOptions
   });
   if (info.accepted.length>0){

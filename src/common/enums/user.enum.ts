@@ -1,17 +1,17 @@
 export enum GenderType {
-    male = "male",
-    female = "female",
+  male = "male",
+  female = "female",
 }
 
 export enum UserRoleEnum {
-    Doctor = "Doctor",
-    Patient = "Patient", 
-    Companion = "Companion", 
-  }
-export enum userProvider  {
-   
-   system ="system",
-   google ="google"
+  Doctor = "Doctor",
+  Patient = "Patient",
+  Companion = "Companion",
+}
+export enum userProvider {
+
+  system = "system",
+  google = "google"
 }
 
 
@@ -22,13 +22,18 @@ export enum specializationType {
   GeneralSurgerySpecialization = "الجراحة العامة",
   Nephrology = "أمراض الكلى",
   EmergencyMedicine = "الطب الطارئ",
-  Hematology = "أمراض الدم"
+  Hematology = "أمراض الدم",
+  Dermatology = "الأمراض الجلدية",
+  Psychiatry = " الطب النفسي",
+  Anesthesiology = " التخدير",
+  PhysicalTherapy = " العلاج الطبيعي"
+
 }
 
 
 export enum bloodType {
- A_POS = "A+",
- A_NEG = "A-",
+  A_POS = "A+",
+  A_NEG = "A-",
   B_POS = "B+",
   B_NEG = "B-",
   AB_POS = "AB+",
@@ -39,12 +44,12 @@ export enum bloodType {
 }
 
 
-export enum flagType{
-  All="All",
-  current="current"
+export enum flagType {
+  All = "All",
+  current = "current"
 }
 
-export enum statusType{
-  confirmed="confirmed",
-  cancelled="cancelled"
+export enum statusType {
+  confirmed = "confirmed",
+  cancelled = "cancelled"
 }

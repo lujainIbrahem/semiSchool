@@ -1,7 +1,7 @@
 import { TokenService } from '../common/service/token.service';
 import { Injectable } from '@nestjs/common';
 import { appointmentRepo, availableTimeRepo, OtpRepo, revokeTokenRepo, UserRepo } from '../module/Db';
-import { Types } from 'mongoose';
+import { GenderType, specializationType, UserRoleEnum } from 'src/common';
 
 
 @Injectable()
@@ -21,155 +21,159 @@ export class seedDataService {
   async seedDoctors() {
     const doctorsData = [
       {
-        fName: "Loujain ",
+        fName: "loujain ",
         lName: "Ibrahem",
-        email: "lojyigfrffgbrgvafghem7@gmail.com",
+        email: "loujainIbrahem@gmail.com",
         password: "1Lojy@1234",
         cPassword: "1Lojy@1234",
         address: "25st",
         phone: "01022501044",
-        gender: "female",
-        price: 25,
-        specialization: "الطب الطارئ",
-        confirmed: "true",
-        role: "Doctor"
+        gender: GenderType.female,
+        price: 850,
+        specialization: specializationType.EmergencyMedicine,
+        confirmed: true,
+        role: UserRoleEnum.Doctor
       },
       {
-        fName: "Salma ",
+        fName: "salma ",
         lName: "Emad",
-        email: "salmfggrfgfvaEmad@gmail.com",
+        email: "salmaEmad@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "25st",
+        phone: "01035645582",
+        gender: GenderType.female,
+        price: 550,
+        specialization: specializationType.GeneralSurgerySpecialization,
+        confirmed: true,
+        role: UserRoleEnum.Doctor
+      },
+      {
+        fName: "mrehan ",
+        lName: "adel",
+        email: "mrehanAdel@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "1stgiza",
+        phone: "01025458255",
+        gender: GenderType.female,
+        price: 630,
+        specialization: specializationType.InternalMedicineSpecialty,
+        confirmed: true,
+        role: UserRoleEnum.Doctor
+      },
+      {
+        fName: "mohamed ",
+        lName: "frag",
+        email: "mohamedFrag@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "25st new Cairo",
+        phone: "0123501044",
+        gender: GenderType.male,
+        price: 360,
+        specialization: specializationType.Nephrology,
+        confirmed: true,
+        role: UserRoleEnum.Doctor
+      },
+      {
+        fName: "ahmed ",
+        lName: "mostafa",
+        email: "ahmedMostafa@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "25st mohamedAli",
+        phone: "0102266094",
+        gender: GenderType.male,
+        price: 750,
+        specialization: specializationType.cardiologySpecialty,
+        confirmed: true,
+        role: UserRoleEnum.Doctor
+      },
+      {
+        fName: "razan",
+        lName: "diab",
+        email: "razanMohamed@gmail.com",
         password: "1Lojy@1234",
         cPassword: "1Lojy@1234",
         address: "25st",
         phone: "01022501044",
-        gender: "female",
-        price: 25,
-        specialization: "أمراض الدم",
-        confirmed: "true",
-        role: "Doctor"
+        gender: GenderType.female,
+        price: 450,
+        specialization: specializationType.chestSpecialty,
+        confirmed: true,
+        role: UserRoleEnum.Doctor
       },
-
+      {
+        fName: "yousef ",
+        lName: "shaban",
+        email: "yousefShaban@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "25st",
+        phone: "01022501044",
+        gender: GenderType.male,
+        price: 990,
+        specialization: specializationType.PhysicalTherapy,
+        confirmed: true,
+        role: UserRoleEnum.Doctor
+      },
+      {
+        fName: "nour",
+        lName: "mostafa",
+        email: "nourmostafa@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "25st",
+        phone: "01022501034",
+        gender: GenderType.female,
+        price: 720,
+        specialization: specializationType.Psychiatry,
+        confirmed: true,
+        role: UserRoleEnum.Doctor
+      },
+      {
+        fName: "ahmed",
+        lName: "saif",
+        email: "ahmedSaif@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "25st",
+        phone: "0102250234",
+        gender: GenderType.male,
+        price: 360,
+        specialization: specializationType.chestSpecialty,
+        confirmed: true,
+        role: UserRoleEnum.Doctor
+      },
+      {
+        fName: "menna ",
+        lName: "osama",
+        email: "mennaOsama@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "25st",
+        phone: "01022501144",
+        gender: GenderType.female,
+        price: 640,
+        specialization: specializationType.cardiologySpecialty,
+        confirmed: true,
+        role: UserRoleEnum.Doctor
+      },
     ];
 
-    // 2. استخدام الميثود اللي عملناها في الـ DbRepo لإضافة كل الدكاترة مرة واحدة
-    const createdDoctors = await this.userRepo.createMany(doctorsData);
+    for (const doctor of doctorsData) {
+      const exists = await this.userRepo.findOne({ email: doctor.email })
+      if (!exists) {
+        await this.userRepo.create(doctor)
+      }
 
-    console.log(`✅ تم إضافه دكتور بنجاح!`);
-    return createdDoctors;
-
-
-  }
-
-  async seedCompanion() {
-    const companionsData = [
-      {
-        fName: "Aya",
-        lName: "Mohamed",
-        email: "ayaMoffhrfvamed@gmail.com",
-        password: "1Lojy@1234",
-        cPassword: "1Lojy@1234",
-        address: "25st",
-        phone: "01022501044",
-        gender: "female",
-        patientId: null,
-        relationPatient: "mother",
-        experienceLevel: "djf",
-        role: "Companion"
-
-      },
-      {
-        fName: "mohamed",
-        lName: "Ahmed",
-        email: "mohrafmeffd@gmail.com",
-        password: "1Lojy@1234",
-        cPassword: "1Lojy@1234",
-        address: "25st",
-        phone: "01022501044",
-        gender: "female",
-        patientId: null,
-        relationPatient: "fatrher",
-        experienceLevel: "djf",
-        role: "Companion"
-
-      },]
-    const createdCompanions = await this.userRepo.createMany(companionsData);
-    console.log(`✅ تم إضافه مرافق بنجاح!`);
-    return createdCompanions;
-  }
-
-
- async seedpatient(doctors: any[], companions: any[]) {
-  const patientsData = [
-    {
-      fName: "Amahaya",
-      lName: "jah",
-      email: "mahafffr@gmail.com",
-      password: "1Lojy@1234",
-      cPassword: "1Lojy@1234",
-      age: 20,
-      address: "25st",
-      phone: "01022501044",
-      gender: "female",
-      blood: "AB+",
-      currentMedication: "Fdf",
-      disease: "fr",
-      doctorId: doctors[0]._id,      // المريض الأول مع الدكتور الأول
-      companionId: companions[0]._id, // المريض الأول مع المرافق الأول
-      role: "Patient"
-    },
-    {
-      fName: "nour",
-      lName: "Mohamed",
-      email: "nofuffr@gmail.com",
-      password: "1Lojy@1234",
-      cPassword: "1Lojy@1234",
-      age: 22,
-      address: "30st",
-      phone: "01099999999",
-      gender: "female",
-      blood: "O+",
-      currentMedication: "None",
-      disease: "none",
-      doctorId: doctors[1]._id,      // المريض الثاني مع الدكتور الثاني
-      companionId: companions[1]._id, // المريض الثاني مع المرافق الثاني
-      role: "Patient"
     }
-  ];
 
-  // تأكدي من عمل return للنتيجة لكي تستلميها في seedAll
-  return await this.userRepo.createMany(patientsData);
-}
-
-
-  async seedAll() {
-
-    // 2. كرتي الدكاترة
-    const doctors = await this.seedDoctors();
-
-    // 3. كرتي المرافقين
-    const companions = await this.seedCompanion();
-
-    // 4. كرتي المرضى وابعثي ليهم IDs الدكاترة والمرافقين
-    const patients = await this.seedpatient(doctors, companions);
-
-    // 5. الآن نربط المرافق بالمريض (الخطوة اللي ناقصاكي)
-    // هنحدث كل مرافق بالـ ID بتاع المريض الخاص بيه
-    await this.userRepo.updateOne(
-      { _id: companions[0]._id },
-      { patientId: patients[0]._id }
-    );
-
-    await this.userRepo.updateOne(
-      { _id: companions[1]._id },
-      { patientId: patients[1]._id }
-    );
-
-    console.log("✅ All data seeded and cross-linked successfully!");
-
+    return { message: "done" }
   }
-
-
-
 }
+
+
 
 

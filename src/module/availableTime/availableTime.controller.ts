@@ -18,9 +18,9 @@ export class availableTimeController {
     @Post("createAvailableTime")
     createAvailableTime(
         @Req() req: UserReq,
-        @Body() body:createAvailableTimeDTO
+        @Body() body: createAvailableTimeDTO
     ) {
-        return this.availableTimeService.createAvailableTime(req,body)
+        return this.availableTimeService.createAvailableTime(req, body)
     }
 
     //======================== getAvailableTime =====================
@@ -30,20 +30,20 @@ export class availableTimeController {
     })
     @Get("AvailableTime")
     getAvailableTime(
-    @Query('date') date:string
+        @Query('date') date: string
     ) {
         return this.availableTimeService.getAvailableTime(date)
     }
-  //======================== getAvailableTimeId =====================
-      @Auth({
+    //======================== getAvailableTimeId =====================
+    @Auth({
         roles: [],
         typeToken: UserTokenTypeEnum.access
     })
-@Get("AvailableTime/:id")
-getAvailableTimeId(
-  @Query('date') date:string,
-  @Param() param:doctorIdDTO
-) {
-  return this.availableTimeService.getAvailableTimeId(date, param);
-}
+    @Get("AvailableTime/:id")
+    getAvailableTimeId(
+        @Query('date') date: string,
+        @Param() param: doctorIdDTO
+    ) {
+        return this.availableTimeService.getAvailableTimeId(date, param);
+    }
 }

@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, Req, Patch } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UserRoleEnum } from 'src/common';
-import { loginWithGmail } from './signUpDTO';
+import { completeProfileDTO, loginWithGmail } from './authDTO';
+import type{ UserReq } from 'src/common/interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -13,5 +13,15 @@ export class AuthController {
     return this.authService.loginWithGmail(body.idToken,body.role);
   }
 
+  // ====================== completeProfile ======================
+
+  @Patch('completeProfile')
+  async completeProfile(
+    @Req() req:UserReq,
+    @Body() body: completeProfileDTO,
+  )
+     {
+    return this.authService.completeProfile(req,body);
+  }
 
 }

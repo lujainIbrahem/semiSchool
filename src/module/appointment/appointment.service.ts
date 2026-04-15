@@ -64,7 +64,7 @@ export class appointmentService {
         select: 'start end isBooked',
         populate: {
           path: 'doctorId',
-          select: 'userName specialization email phone peice'
+          select: 'userName specialization email phone price'
         }
       }
     );

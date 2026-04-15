@@ -1,34 +1,36 @@
 import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { UserRepo } from "../Db"; // تأكدي من المسار الصح عندك
 import { TokenService } from "src/common/service/token.service";
-import { userProvider, UserRoleEnum } from "src/common";
-import { OAuth2Client } from 'google-auth-library'; 
+import { GenderType, specializationType, userProvider, UserRoleEnum } from "src/common";
+import { OAuth2Client } from 'google-auth-library';
+import { UserReq } from "src/common/interfaces";
+import { completeProfileDTO } from "./authDTO";
 
 @Injectable()
-export class AuthService { 
+export class AuthService {
   constructor(
     private readonly userRepo: UserRepo,
     private tokenService: TokenService,
-  ) {}
+  ) { }
 
- async loginWithGmail(idToken: string, role: UserRoleEnum) {
+  async loginWithGmail(idToken: string, role: UserRoleEnum) {
 
     // 1. التعديل الأول: أضفنا await قبل الـ client.verifyIdToken
-   const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-const ticket = await client.verifyIdToken({
-  idToken,
-  audience: process.env.GOOGLE_CLIENT_ID, // خليها نفس الـ Client ID
-});
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID, // خليها نفس الـ Client ID
+    });
     const payload = ticket.getPayload();
     if (!payload) {
       throw new UnauthorizedException('Invalid Google Token');
     }
 
-  
+
     const email = payload.email;
     const name = payload.name || "User";
-    const given_name = payload.given_name ;
+    const given_name = payload.given_name;
     const family_name = payload.family_name;
     const email_verified = payload.email_verified || false;
 
@@ -38,7 +40,7 @@ const ticket = await client.verifyIdToken({
 
     // ====================== check if user exists ======================
 
-      let user = await this.userRepo.findOne({ email });
+    let user = await this.userRepo.findOne({ email });
 
     if (!user) {
       // ✅ Create new user
@@ -85,4 +87,41 @@ const ticket = await client.verifyIdToken({
 
     return { message: 'Google Auth Success', access_token, refresh_token };
   }
+
+
+  async completeProfile(req: UserReq, body: completeProfileDTO) {
+    const { age, gender, phone, specialization, currentMedication, disease, address, blood, price, patientId, relationPatient,
+      experienceLevel, doctorId, companionId } = body
+
+
+    const user = await this.userRepo.findById(req.user._id)
+    if (!user) {
+      throw new BadRequestException("user not found")
+    }
+
+    user.address = address || ""
+    user.phone = phone || ""
+    user.gender = GenderType.female || GenderType.male
+
+    if (user.role === "Patient") {
+      if (!specialization) {
+        throw new BadRequestException("Specialization is required")
+      }
+      user.specialization = specialization
+      if (price) user.price = price
+
+    }
+ if (user.role === "Doctor") {
+      if (!specialization) {
+        throw new BadRequestException("Specialization is required")
+      }
+      user.specialization = specialization
+      if (price) user.price = price
+
+    }
+
+  }
+
+
+
 }

@@ -37,7 +37,7 @@ req.decoded =decoded?.decoded
    return next();
   }   
  catch (error) {
-  throw new BadRequestException(error.message);
+  throw new BadRequestException("error");
 
 }
   }

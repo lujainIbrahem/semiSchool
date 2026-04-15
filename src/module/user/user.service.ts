@@ -3,7 +3,7 @@ import { BadRequestException, ConflictException, ForbiddenException, Injectable 
 import { availableTimeRepo, OtpRepo, revokeTokenRepo, UserRepo } from '../Db';
 import { confirmEmailDTO, forgetPasswordDTO, loginDTO, logOutDTO, resendOtpDTO, resetPasswordDTO, signUpDTO, updatePasswordDTO } from './signUpDTO';
 import { flagType, GenderType, UserOtp, UserRoleEnum } from 'src/common/enums';
-import { generateOTP } from 'src/common';
+import { generateOTP, sendEmail } from 'src/common';
 import { Types } from 'mongoose';
 import { Compare } from 'src/utils';
 import { UserReq } from 'src/common/interfaces';
@@ -27,7 +27,7 @@ export class UserService {
       createdBy: userId,
       expireAt: new Date(Date.now() + 60 * 1000)
     })
-
+    return otp
   }
 
   //======================== signUp =====================
@@ -125,6 +125,7 @@ export class UserService {
       throw new ForbiddenException("User not created")
     }
     await this.sendOtp(user._id)
+
     return user
   }
   

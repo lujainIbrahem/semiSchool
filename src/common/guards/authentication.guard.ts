@@ -1,9 +1,7 @@
-import { tokenType } from './../middleware/AuthenticationMiddleware';
 import { BadRequestException, CanActivate, ExecutionContext, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { TokenService } from 'src/common/service/token.service';
 import { Reflector } from '@nestjs/core';
 import { tokenName } from '../decorator';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
@@ -53,7 +51,7 @@ export class AuthenticationGuard implements CanActivate {
        return true;
        }
      catch (error) {
-      throw new BadRequestException(error.message);
+      throw new BadRequestException("error");
     
       }
 

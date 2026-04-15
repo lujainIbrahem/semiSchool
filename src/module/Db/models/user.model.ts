@@ -32,6 +32,7 @@ export class User {
   } })
   password: string;
   
+  
   @Prop({ type: String, enum: userProvider, default: userProvider.system })
   provider: string;
 

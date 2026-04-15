@@ -7,7 +7,7 @@ async function bootstrap() {
 
 app.enableCors({
   origin: (origin, callback) => {
-    callback(null, true); // أي origin مسموح
+    callback(null, true); 
   },
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
