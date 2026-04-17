@@ -165,7 +165,7 @@ export class seedDataService {
 
     const patientsData = [
       {
-                confirmed: true,
+        confirmed: true,
         role: UserRoleEnum.Patient,
         fName: "loujain",
         lName: "ibrahem",
@@ -178,12 +178,15 @@ export class seedDataService {
         blood: bloodType.A_POS,
         disease: "Diabetes",
         age: 45,
-        currentMedication: "Insulin"
+        currentMedication: "Insulin",
+        doctorId: new Types.ObjectId("69e1c8ef98edd507900c5600")
+
       }
-      , {        confirmed: true,
+      , {
+        confirmed: true,
 
         role: UserRoleEnum.Patient,
-      fName: "Aya",
+        fName: "Aya",
         lName: "mohamed",
         email: "ayamohamed@gmail.com",
         password: "1Lojy@1234",
@@ -191,12 +194,13 @@ export class seedDataService {
         address: "Alex",
         phone: "01058392017",
         gender: GenderType.female,
-      blood: bloodType.O_POS,
+        blood: bloodType.O_POS,
         disease: "Hypertension",
         age: 38,
         currentMedication: "Amlodipine"
       }
-      , {        confirmed: true,
+      , {
+        confirmed: true,
 
         role: UserRoleEnum.Patient,
         fName: "Youssef",
@@ -211,10 +215,11 @@ export class seedDataService {
         disease: "Asthma",
         age: 20,
         currentMedication: "Ventolin",
-doctorId: new Types.ObjectId("69e1b923fa8fda4fef7145aa") 
-    }
+        doctorId: new Types.ObjectId("69e1c8f498edd507900c5618")
+      }
 
-      , {        confirmed: true,
+      , {
+        confirmed: true,
 
         role: UserRoleEnum.Patient,
         fName: "mohamed",
@@ -229,281 +234,297 @@ doctorId: new Types.ObjectId("69e1b923fa8fda4fef7145aa")
         disease: "Anemia",
         age: 29,
         currentMedication: "Iron supplements",
-        doctorId: new Types.ObjectId("69e1b924fa8fda4fef7145b0")
+        doctorId: new Types.ObjectId("69e1c8f398edd507900c5612")
       },
-  {        confirmed: true,
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Patient,
-    fName: "Khaled",
-    lName: "Mostafa",
-    email: "khaled5@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Tanta",
-    phone: "01033847129",
-    gender: GenderType.male,
-    blood: bloodType.AB_NEG,
-    disease: "Kidney Stones",
-    age: 50,
-    currentMedication: "Painkillers"
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Patient,
+        fName: "Khaled",
+        lName: "Mostafa",
+        email: "khaled5@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Tanta",
+        phone: "01033847129",
+        gender: GenderType.male,
+        blood: bloodType.AB_NEG,
+        disease: "Kidney Stones",
+        age: 50,
+        currentMedication: "Painkillers"
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Patient,
-    fName: "Nour",
-    lName: "Ali",
-    email: "nour6@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Zagazig",
-    phone: "01090561374",
-    gender: GenderType.female,
-    blood: bloodType.O_NEG,
-    disease: "Depression",
-    age: 33,
-    currentMedication: "SSRIs",
-    doctorId: new Types.ObjectId("69e1b924fa8fda4fef7145c5")
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Patient,
+        fName: "Nour",
+        lName: "Ali",
+        email: "nour6@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Zagazig",
+        phone: "01090561374",
+        gender: GenderType.female,
+        blood: bloodType.O_NEG,
+        disease: "Depression",
+        age: 33,
+        currentMedication: "SSRIs",
+        doctorId: new Types.ObjectId("69e1c8f198edd507900c5606")
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Patient,
-    fName: "Omar",
-    lName: "Hany",
-    email: "omar7@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Ismailia",
-    phone: "01047192836",
-    gender: GenderType.male,
-    blood: bloodType.B_NEG,
-    disease: "Heart Disease",
-    age: 60,
-    currentMedication: "Beta blockers"
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Patient,
+        fName: "Omar",
+        lName: "Hany",
+        email: "omar7@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Ismailia",
+        phone: "01047192836",
+        gender: GenderType.male,
+        blood: bloodType.B_NEG,
+        disease: "Heart Disease",
+        age: 60,
+        currentMedication: "Beta blockers"
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Patient,
-    fName: "Momen",
-    lName: "Yousri",
-    email: "momen8@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "6th October",
-    phone: "01065928310",
-    gender: GenderType.male,
-    blood: bloodType.AB_NEG,
-    disease: "Migraine",
-    age: 27,
-    currentMedication: "Pain relievers",
-    doctorId: new Types.ObjectId("69e1b924fa8fda4fef7145bf")
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Patient,
+        fName: "Momen",
+        lName: "Yousri",
+        email: "momen8@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "6th October",
+        phone: "01065928310",
+        gender: GenderType.male,
+        blood: bloodType.AB_NEG,
+        disease: "Migraine",
+        age: 27,
+        currentMedication: "Pain relievers",
+        doctorId: new Types.ObjectId("69e1c8f298edd507900c560c")
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Patient,
-    fName: "Tamer",
-    lName: "Saad",
-    email: "tamer9@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Fayoum",
-    phone: "01081472953",
-    gender: GenderType.male,
-    blood: bloodType.A_POS,
-    disease: "Liver Disease",
-    age: 55,
-    currentMedication: "Hepatitis treatment"
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Patient,
+        fName: "Tamer",
+        lName: "Saad",
+        email: "tamer9@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Fayoum",
+        phone: "01081472953",
+        gender: GenderType.male,
+        blood: bloodType.A_POS,
+        disease: "Liver Disease",
+        age: 55,
+        currentMedication: "Hepatitis treatment"
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Patient,
-    fName: "Laila",
-    lName: "Mahmoud",
-    email: "laila10@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Shubra",
-    phone: "01023658947",
-    gender: GenderType.female,
-    blood: bloodType.O_POS,
-    disease: "Thyroid Disorder",
-    age: 40,
-    currentMedication: "Thyroxine",
-    doctorId: new Types.ObjectId("69e1b924fa8fda4fef7145b9")
-  }
-];
+        role: UserRoleEnum.Patient,
+        fName: "Laila",
+        lName: "Mahmoud",
+        email: "laila10@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Shubra",
+        phone: "01023658947",
+        gender: GenderType.female,
+        blood: bloodType.O_POS,
+        disease: "Thyroid Disorder",
+        age: 40,
+        currentMedication: "Thyroxine",
+        doctorId: new Types.ObjectId("69e1c8f398edd507900c5612")
+      }
+    ];
 
-const CompanionsData = [
-  {        confirmed: true,
+    const CompanionsData = [
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Companion,
-    fName: "Ali",
-    lName: "Hassan",
-    email: "ali1@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Cairo",
-    phone: "01092736451",
-    gender: GenderType.male,
-    relationPatient: "father",
-    experienceLevel: "junior",
-    patientId: new Types.ObjectId("69e1c0e7b7e7170519a20916")
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Companion,
+        fName: "Ali",
+        lName: "Hassan",
+        email: "ali1@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Cairo",
+        phone: "01092736451",
+        gender: GenderType.male,
+        relationPatient: "father",
+        experienceLevel: "junior",
+        patientId: new Types.ObjectId("69e1c0e7b7e7170519a20916")
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Companion,
-    fName: "Mona",
-    lName: "Youssef",
-    email: "mona2@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Giza",
-    phone: "01058392017",
-    gender: GenderType.female,
-    relationPatient: "mother",
-    experienceLevel: "senior",
-    patientId: new Types.ObjectId("69e1c0e6b7e7170519a20913")
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Companion,
+        fName: "Mona",
+        lName: "Youssef",
+        email: "mona2@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Giza",
+        phone: "01058392017",
+        gender: GenderType.female,
+        relationPatient: "mother",
+        experienceLevel: "senior",
+        patientId: new Types.ObjectId("69e1c0e6b7e7170519a20913")
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Companion,
-    fName: "Omar",
-    lName: "Saad",
-    email: "omar3@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Alex",
-    phone: "01019475638",
-    gender: GenderType.male,
-    relationPatient: "brother",
-    experienceLevel: "mid",
-    patientId: new Types.ObjectId("69e1c0e7b7e7170519a20919")
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Companion,
+        fName: "Omar",
+        lName: "Saad",
+        email: "omar3@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Alex",
+        phone: "01019475638",
+        gender: GenderType.male,
+        relationPatient: "brother",
+        experienceLevel: "mid",
+        patientId: new Types.ObjectId("69e1c0e7b7e7170519a20919")
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Companion,
-    fName: "Sara",
-    lName: "Ali",
-    email: "sara4@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Mansoura",
-    phone: "01076291845",
-    gender: GenderType.female,
-    relationPatient: "sister",
-    experienceLevel: "junior",
-    patientId: new Types.ObjectId("69e1c0e7b7e7170519a2091c")
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Companion,
+        fName: "Sara",
+        lName: "Ali",
+        email: "sara4@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Mansoura",
+        phone: "01076291845",
+        gender: GenderType.female,
+        relationPatient: "sister",
+        experienceLevel: "junior",
+        patientId: new Types.ObjectId("69e1c0e7b7e7170519a2091c")
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Companion,
-    fName: "Khaled",
-    lName: "Mostafa",
-    email: "khaled5@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Tanta",
-    phone: "01033847129",
-    gender: GenderType.male,
-    relationPatient: "son",
-    experienceLevel: "mid",
-    patientId: new Types.ObjectId("69e1c0e7b7e7170519a2091f")
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Companion,
+        fName: "Khaled",
+        lName: "Mostafa",
+        email: "khaled5@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Tanta",
+        phone: "01033847129",
+        gender: GenderType.male,
+        relationPatient: "son",
+        experienceLevel: "mid",
+        patientId: new Types.ObjectId("69e1c0e7b7e7170519a2091f")
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Companion,
-    fName: "Nour",
-    lName: "Hassan",
-    email: "nour6@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Zagazig",
-    phone: "01090561374",
-    gender: GenderType.female,
-    relationPatient: "daughter",
-    experienceLevel: "senior",
-    patientId: new Types.ObjectId("69e1c0e7b7e7170519a20922")
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Companion,
+        fName: "Nour",
+        lName: "Hassan",
+        email: "nour6@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Zagazig",
+        phone: "01090561374",
+        gender: GenderType.female,
+        relationPatient: "daughter",
+        experienceLevel: "senior",
+        patientId: new Types.ObjectId("69e1c0e7b7e7170519a20922")
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Companion,
-    fName: "Tamer",
-    lName: "Mahmoud",
-    email: "tamer7@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Fayoum",
-    phone: "01047192836",
-    gender: GenderType.male,
-    relationPatient: "father",
-    experienceLevel: "junior",
-    patientId: new Types.ObjectId("69e1c0e7b7e7170519a20925")
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Companion,
+        fName: "Tamer",
+        lName: "Mahmoud",
+        email: "tamer7@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Fayoum",
+        phone: "01047192836",
+        gender: GenderType.male,
+        relationPatient: "father",
+        experienceLevel: "junior",
+        patientId: new Types.ObjectId("69e1c0e7b7e7170519a20925")
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Companion,
-    fName: "Laila",
-    lName: "Osama",
-    email: "laila8@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Ismailia",
-    phone: "01065928310",
-    gender: GenderType.female,
-    relationPatient: "mother",
-    experienceLevel: "mid",
-    patientId: new Types.ObjectId("69e1c0e7b7e7170519a20928")
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Companion,
+        fName: "Laila",
+        lName: "Osama",
+        email: "laila8@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Ismailia",
+        phone: "01065928310",
+        gender: GenderType.female,
+        relationPatient: "mother",
+        experienceLevel: "mid",
+        patientId: new Types.ObjectId("69e1c0e7b7e7170519a20928")
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Companion,
-    fName: "Youssef",
-    lName: "Adel",
-    email: "youssef9@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "6th October",
-    phone: "01081472953",
-    gender: GenderType.male,
-    relationPatient: "brother",
-    experienceLevel: "senior",
-    patientId: new Types.ObjectId("69e1c0e7b7e7170519a2092b")
-  },
-  {        confirmed: true,
+        role: UserRoleEnum.Companion,
+        fName: "Youssef",
+        lName: "Adel",
+        email: "youssef9@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "6th October",
+        phone: "01081472953",
+        gender: GenderType.male,
+        relationPatient: "brother",
+        experienceLevel: "senior",
+        patientId: new Types.ObjectId("69e1c0e7b7e7170519a2092b")
+      },
+      {
+        confirmed: true,
 
-    role: UserRoleEnum.Companion,
-    fName: "Menna",
-    lName: "Hany",
-    email: "menna10@gmail.com",
-    password: "1Lojy@1234",
-    cPassword: "1Lojy@1234",
-    address: "Shubra",
-    phone: "01023658947",
-    gender: GenderType.female,
-    relationPatient: "sister",
-    experienceLevel: "junior",
-    patientId:new Types.ObjectId("69e1c0e7b7e7170519a2092e")
-  }
-];
+        role: UserRoleEnum.Companion,
+        fName: "Menna",
+        lName: "Hany",
+        email: "menna10@gmail.com",
+        password: "1Lojy@1234",
+        cPassword: "1Lojy@1234",
+        address: "Shubra",
+        phone: "01023658947",
+        gender: GenderType.female,
+        relationPatient: "sister",
+        experienceLevel: "junior",
+        patientId: new Types.ObjectId("69e1c0e7b7e7170519a2092e")
+      }
+    ];
 
 
     for (const doctor of doctorsData) {
       const exists = await this.userRepo.findOne({ email: doctor.email })
-      if(exists)continue
-        await this.userRepo.create(doctor)
+      if (exists) continue
+      await this.userRepo.create(doctor)
     }
 
 
 
-   for (const patient of patientsData) {
+    for (const patient of patientsData) {
       const exists = await this.userRepo.findOne({ email: patient.email })
-      if(exists)continue
-        await this.userRepo.create(patient)
+      if (exists) continue
+      await this.userRepo.create(patient)
     }
 
-       for (const companion of CompanionsData) {
+    for (const companion of CompanionsData) {
       const exists = await this.userRepo.findOne({ email: companion.email })
-      if(exists)continue
-        await this.userRepo.create(companion)
+      if (exists) continue
+      await this.userRepo.create(companion)
     }
 
     return { message: "done" }
