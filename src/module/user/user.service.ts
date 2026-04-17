@@ -207,6 +207,7 @@ export class UserService {
     if (!user) {
       throw new BadRequestException("User not found");
     }
+    const role= user.role
     if (!await Compare({ plainText: password, hash: user.password })) {
       throw new BadRequestException("Invalid password");
     }
@@ -231,7 +232,7 @@ export class UserService {
       }
     });
 
-    return { message: "Done", access_token, refresh_token }
+    return { message: "Done", access_token, refresh_token ,role}
 
   }
   //======================== revokeToken =====================
