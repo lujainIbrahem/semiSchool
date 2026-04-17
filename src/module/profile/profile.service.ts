@@ -42,23 +42,29 @@ const user = await this.userRepo.findById(req.user._id, "-password");
   }
 
   //======================== getProfileId =====================
+async getprofileId(req: UserReq, params: profileDTO) {
+  const user = await this.userRepo.findById(params.id, "-password");
 
-  async getprofileId(req: UserReq, params: profileDTO) {
-    const user = await this.userRepo.findById(params.id , "-password" ) //patient
-    if (!user) {
-      throw new BadRequestException("user not found")
-    }
-
-    if (req.user.role === UserRoleEnum.Doctor &&   user.doctorId?.toString() !== req.user._id.toString()) {
-      throw new ForbiddenException("Not allowed");
-    }
-    else if (req.user.role === UserRoleEnum.Companion &&user.companionId?.toString() !== req.user._id.toString()) {
-      throw new ForbiddenException("Not allowed");
-    }
-
-    return { message: "Done", user }
-
+  if (!user) {
+    throw new BadRequestException("user not found");
   }
+
+  // Doctor check
+  if (req.user.role === UserRoleEnum.Doctor) {
+    if (user.doctorId && user.doctorId.toString() !== req.user._id.toString()) {
+      throw new ForbiddenException("Not allowed");
+    }
+  }
+
+  // Companion check
+  else if (req.user.role === UserRoleEnum.Companion) {
+    if (user.companionId && user.companionId.toString() !== req.user._id.toString()) {
+      throw new ForbiddenException("Not allowed");
+    }
+  }
+
+  return { message: "Done", user };
+}
 
   //======================== updateProfile =====================
 

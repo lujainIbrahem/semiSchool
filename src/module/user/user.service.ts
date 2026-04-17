@@ -3,7 +3,6 @@ import { BadRequestException, ConflictException, ForbiddenException, Injectable 
 import { availableTimeRepo, OtpRepo, revokeTokenRepo, UserRepo } from '../Db';
 import { confirmEmailDTO, forgetPasswordDTO, loginDTO, logOutDTO, resendOtpDTO, resetPasswordDTO, signUpDTO, updatePasswordDTO } from './signUpDTO';
 import { flagType, GenderType, UserOtp, UserRoleEnum } from 'src/common/enums';
-import { emailTemplate, sendEmail } from 'src/common';
 import { Types } from 'mongoose';
 import { Compare } from 'src/utils';
 import { UserReq } from 'src/common/interfaces';
@@ -20,13 +19,13 @@ export class UserService {
 
   ) { }
 
- private async sendOtp(userId: Types.ObjectId) {
+  private async sendOtp(userId: Types.ObjectId) {
     const otp = await generateOTP()
     await this.OtpRepo.create({
       type: UserOtp.confirmEmail,
       code: otp.toString(),
       createdBy: userId,
-      expireAt: new Date(Date.now() + 60 * 1000)
+      expireAt: new Date(Date.now() + 5 * 60 * 1000)//دقيقه
     })
     return otp
 
@@ -34,8 +33,8 @@ export class UserService {
   //======================== signUp =====================
 
   async signUp(body: signUpDTO) {
-    const { fName,lName,userName, password, email, age, gender, phone, specialization
-      , currentMedication, disease, address, blood, role,price,
+    const { fName, lName, userName, password, email, age, gender, phone, specialization
+      , currentMedication, disease, address, blood, role, price,
       patientId, relationPatient, experienceLevel, doctorId, companionId } = body
 
     const userExist = await this.userRepo.findOne({ email })
@@ -46,7 +45,7 @@ export class UserService {
     let user;
     if (role == UserRoleEnum.Doctor) {
       user = await this.userRepo.create({
-        fName,lName,
+        fName, lName,
         userName,
         password,
         email,
@@ -80,7 +79,7 @@ export class UserService {
         }
       }
       user = await this.userRepo.create({
-         fName,lName,
+        fName, lName,
         userName,
         password,
         email,
@@ -92,8 +91,8 @@ export class UserService {
         currentMedication,
         role,
         blood,
-      doctorId: doctorId ? new Types.ObjectId(doctorId) : undefined,
-      companionId: companionId ? new Types.ObjectId(companionId) : undefined,
+        doctorId: doctorId ? new Types.ObjectId(doctorId) : undefined,
+        companionId: companionId ? new Types.ObjectId(companionId) : undefined,
       })
     }
     else if (role == UserRoleEnum.Companion) {
@@ -107,7 +106,7 @@ export class UserService {
         }
       }
       user = await this.userRepo.create({
-        fName,lName,
+        fName, lName,
         userName,
         password,
         email,
@@ -125,11 +124,11 @@ export class UserService {
     if (!user) {
       throw new ForbiddenException("User not created")
     }
- await this.sendOtp(user._id);
+    await this.sendOtp(user._id);
 
     return user
   }
-  
+
   //======================== resendOtp =====================
 
   async resendOtp(body: resendOtpDTO) {
@@ -155,27 +154,47 @@ export class UserService {
   //======================== confirmEmail =====================
 
   async confirmEmail(body: confirmEmailDTO) {
-    const { email, code } = body
+    const { email, code } = body;
 
     const user = await this.userRepo.findOne(
       { email, confirmed: false },
       undefined,
       { populate: { path: "otp" } }
-    )
+    );
 
     if (!user) {
       throw new BadRequestException("User not found or already exists");
     }
 
-    if (!await Compare({ plainText: code, hash: (user.otp as any)[0].code })) {
-      throw new BadRequestException("Invalid otp")
+    const otpArray = user.otp as any[];
+
+    if (!otpArray?.length) {
+      throw new BadRequestException("OTP not found or expired, please resend OTP");
     }
 
-    user.confirmed = true
-    await user.save()
-    await this.OtpRepo.deleteOne({ filter: { createdBy: user._id } })
-    return { message: "email confirmed" }
+    const otpRecord = otpArray[0];
 
+    if (!otpRecord?.code) {
+      throw new BadRequestException("Invalid OTP data");
+    }
+
+    if (
+      !(await Compare({
+        plainText: code,
+        hash: otpRecord.code,
+      }))
+    ) {
+      throw new BadRequestException("Invalid OTP");
+    }
+
+    user.confirmed = true;
+    await user.save();
+
+    await this.OtpRepo.deleteOne({
+      filter: { createdBy: user._id },
+    });
+
+    return { message: "email confirmed" };
   }
   //======================== login =====================
 
@@ -321,7 +340,7 @@ export class UserService {
     }
 
     if (flag == flagType.All) {
-     await this.userRepo.updateOne(
+      await this.userRepo.updateOne(
         { _id: req.user._id },
         {
           changeCredentails: new Date()
@@ -329,7 +348,7 @@ export class UserService {
       )
       return { message: "success ,logout from all devices" }
     }
-    
+
     if (!req.decoded.id) {
       throw new BadRequestException("Invalid refresh token");
     }
