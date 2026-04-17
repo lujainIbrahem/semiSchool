@@ -30,6 +30,7 @@ export class UserService {
     return otp
 
   }
+
   //======================== signUp =====================
 
   async signUp(body: signUpDTO) {
@@ -233,8 +234,8 @@ export class UserService {
     });
 
     return { message: "Done", access_token, refresh_token ,role}
-
   }
+
   //======================== revokeToken =====================
 
   async revokeToken(req: UserReq) {

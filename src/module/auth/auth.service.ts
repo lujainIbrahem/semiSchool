@@ -5,6 +5,7 @@ import { GenderType, specializationType, userProvider, UserRoleEnum } from "src/
 import { OAuth2Client } from 'google-auth-library';
 import { UserReq } from "src/common/interfaces";
 import { completeProfileDTO } from "./authDTO";
+import { Types } from "mongoose";
 
 @Injectable()
 export class AuthService {
@@ -41,6 +42,7 @@ export class AuthService {
     // ====================== check if user exists ======================
 
     let user = await this.userRepo.findOne({ email });
+    const roleUser = user?.role
 
     if (!user) {
       // ✅ Create new user
@@ -85,7 +87,7 @@ export class AuthService {
       }
     });
 
-    return { message: 'Google Auth Success', access_token, refresh_token };
+    return { message: 'Google Auth Success', access_token, refresh_token, roleUser };
   }
 
 
@@ -101,25 +103,64 @@ export class AuthService {
 
     user.address = address || ""
     user.phone = phone || ""
-    user.gender = GenderType.female || GenderType.male
+    if(gender){user.gender = gender }
+    
+    if (user.role === "Doctor") {
+      if (!specialization) {
+        throw new BadRequestException("Specialization is required")
+      }
+      user.specialization = specialization
+      if (price) user.price = price
+
+    }
 
     if (user.role === "Patient") {
-      if (!specialization) {
-        throw new BadRequestException("Specialization is required")
+      if (!blood || !disease || !age || !currentMedication) {
+        throw new BadRequestException("patient's field is required")
       }
-      user.specialization = specialization
-      if (price) user.price = price
+      user.blood = blood
+      user.disease = disease
+      user.age = age
+      user.currentMedication = currentMedication
+if (doctorId) {
+  const doctor = await this.userRepo.findOne({
+          _id: doctorId,
+          role: UserRoleEnum.Doctor
+        })
+       if(!doctor) throw new BadRequestException("doctorId not found")
 
+  user.doctorId = new Types.ObjectId(doctorId);
+}
+if (companionId) {
+  const Companion = await this.userRepo.findOne({
+          _id: companionId,
+          role: UserRoleEnum.Companion
+        })
+       if(!Companion) throw new BadRequestException("companionId not found")
+
+  user.companionId = new Types.ObjectId(companionId);
+}
     }
- if (user.role === "Doctor") {
-      if (!specialization) {
-        throw new BadRequestException("Specialization is required")
+    
+    if (user.role === "Companion") {
+      if (!patientId || !experienceLevel || !relationPatient ) {
+        throw new BadRequestException("Companion's field is required")
       }
-      user.specialization = specialization
-      if (price) user.price = price
+      user.experienceLevel = experienceLevel
+      user.relationPatient = relationPatient
+if (patientId) {
+  const patient = await this.userRepo.findOne({
+          _id: patientId,
+          role: UserRoleEnum.Patient
+        })
+       if(!patient) throw new BadRequestException("patientId not found")
 
-    }
+  user.patientId = new Types.ObjectId(patientId);
+}
 
+}
+await user.save();
+return {message :"complete information is available"}
   }
 
 
