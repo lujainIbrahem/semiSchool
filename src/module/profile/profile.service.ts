@@ -28,10 +28,10 @@ export class profileService {
     return otp
   }
 
-  //======================== getProfile =====================
+  //======================== getProfileByLogin =====================
 
   async getProfile(req: UserReq) {
-const user = await this.userRepo.findById(req.user._id, "-password");
+    const user = await this.userRepo.findById(req.user._id, "-password");
     if (!user) {
       throw new BadRequestException("user not found")
     }
@@ -40,38 +40,54 @@ const user = await this.userRepo.findById(req.user._id, "-password");
 
 
   }
+  //======================== getProfileByDoctor =====================
+
+  async getProfileDoctor() {
+    const doctors = await this.userRepo.find({
+      filter: { role: UserRoleEnum.Doctor },
+      select: "-password"
+    });
+    if (doctors.length === 0) {
+      throw new BadRequestException("Doctors not found")
+    }
+
+    return { message: "Done", doctors }
+
+
+  }
+
 
   //======================== getProfileId =====================
-async getprofileId(req: UserReq, params: profileDTO) {
-  const user = await this.userRepo.findById(params.id, "-password");
+  async getprofileId(req: UserReq, params: profileDTO) {
+    const user = await this.userRepo.findById(params.id, "-password");
 
-  if (!user) {
-    throw new BadRequestException("user not found");
-  }
-
-  // Doctor check
-  if (req.user.role === UserRoleEnum.Doctor) {
-    if (user.doctorId && user.doctorId.toString() !== req.user._id.toString()) {
-      throw new ForbiddenException("Not allowed");
+    if (!user) {
+      throw new BadRequestException("user not found");
     }
-  }
 
-  // Companion check
-  else if (req.user.role === UserRoleEnum.Companion) {
-    if (user.companionId && user.companionId.toString() !== req.user._id.toString()) {
-      throw new ForbiddenException("Not allowed");
+    // Doctor check
+    if (req.user.role === UserRoleEnum.Doctor) {
+      if (user.doctorId && user.doctorId.toString() !== req.user._id.toString()) {
+        throw new ForbiddenException("Not allowed");
+      }
     }
-  }
 
-  return { message: "Done", user };
-}
+    // Companion check
+    else if (req.user.role === UserRoleEnum.Companion) {
+      if (user.companionId && user.companionId.toString() !== req.user._id.toString()) {
+        throw new ForbiddenException("Not allowed");
+      }
+    }
+
+    return { message: "Done", user };
+  }
 
   //======================== updateProfile =====================
 
   async updateProfile(req: UserReq, body: updateProfileDTO) {
     const { email, oldPassword, newPassword, ...profile } = body
 
-    const user = await this.userRepo.findById(req.user._id , "-password")
+    const user = await this.userRepo.findById(req.user._id, "-password")
     if (!user) {
       throw new BadRequestException("user not found")
     }

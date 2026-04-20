@@ -11,6 +11,7 @@ export class ProfileController {
 
 
     //======================== getProfile =====================
+
     @Auth({
         roles: [],
         typeToken: UserTokenTypeEnum.access
@@ -23,8 +24,15 @@ export class ProfileController {
     }
 
 
+    //======================== getProfileDoctor =====================
+
+    @Get("getProfileDoctor")
+    getProfileDoctor() {
+        return this.profileService.getProfileDoctor()
+    }
 
     //======================== getProfileId =====================
+
     @Auth({
         roles: [UserRoleEnum.Companion, UserRoleEnum.Doctor],
         typeToken: UserTokenTypeEnum.access
@@ -39,6 +47,7 @@ export class ProfileController {
 
 
     //======================== updateProfile =====================
+
     @Auth({
         roles: [],
         typeToken: UserTokenTypeEnum.access

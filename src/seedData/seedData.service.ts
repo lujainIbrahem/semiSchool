@@ -184,7 +184,6 @@ export class seedDataService {
       }
       , {
         confirmed: true,
-
         role: UserRoleEnum.Patient,
         fName: "Aya",
         lName: "mohamed",
@@ -201,7 +200,6 @@ export class seedDataService {
       }
       , {
         confirmed: true,
-
         role: UserRoleEnum.Patient,
         fName: "Youssef",
         lName: "Samir",
@@ -220,7 +218,6 @@ export class seedDataService {
 
       , {
         confirmed: true,
-
         role: UserRoleEnum.Patient,
         fName: "mohamed",
         lName: "ali",
@@ -238,7 +235,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Patient,
         fName: "Khaled",
         lName: "Mostafa",
@@ -255,7 +251,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Patient,
         fName: "Nour",
         lName: "Ali",
@@ -273,7 +268,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Patient,
         fName: "Omar",
         lName: "Hany",
@@ -290,7 +284,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Patient,
         fName: "Momen",
         lName: "Yousri",
@@ -308,7 +301,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Patient,
         fName: "Tamer",
         lName: "Saad",
@@ -325,7 +317,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Patient,
         fName: "Laila",
         lName: "Mahmoud",
@@ -346,7 +337,6 @@ export class seedDataService {
     const CompanionsData = [
       {
         confirmed: true,
-
         role: UserRoleEnum.Companion,
         fName: "Ali",
         lName: "Hassan",
@@ -362,7 +352,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Companion,
         fName: "Mona",
         lName: "Youssef",
@@ -378,7 +367,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Companion,
         fName: "Omar",
         lName: "Saad",
@@ -394,7 +382,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Companion,
         fName: "Sara",
         lName: "Ali",
@@ -410,7 +397,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Companion,
         fName: "Khaled",
         lName: "Mostafa",
@@ -426,7 +412,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Companion,
         fName: "Nour",
         lName: "Hassan",
@@ -442,7 +427,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Companion,
         fName: "Tamer",
         lName: "Mahmoud",
@@ -458,7 +442,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Companion,
         fName: "Laila",
         lName: "Osama",
@@ -474,7 +457,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Companion,
         fName: "Youssef",
         lName: "Adel",
@@ -490,7 +472,6 @@ export class seedDataService {
       },
       {
         confirmed: true,
-
         role: UserRoleEnum.Companion,
         fName: "Menna",
         lName: "Hany",

@@ -9,23 +9,7 @@ export class DbRepo<TDocument> {
     return this.model.create(data)
   }
 
-  async find({
-    filter,
-    select,
-    options,
-    populate
-  }: {
-    filter: RootFilterQuery<TDocument>,
-    select?: ProjectionType<TDocument>,
-    options?: QueryOptions<TDocument>,
-    populate?: string | string[] | any
-  }) {
-    let query = this.model.find(filter, select, options);
-    if (populate) {
-      query = query.populate(populate);
-    }
-    return await query.exec();
-  }
+
 
 
   async paginate(
@@ -104,6 +88,23 @@ export class DbRepo<TDocument> {
     if (populate) query = query.populate(populate);
     return await query.exec();
   }
+
+  async find({
+    filter,
+    select,
+    options,
+    populate
+  }: {
+    filter: RootFilterQuery<TDocument>,
+    select?: ProjectionType<TDocument>,
+    options?: QueryOptions<TDocument>,
+    populate?: string | string[] | any
+  }) {
+    let query = this.model.find(filter, select, options);
+      if (populate) query = query.populate(populate);
+    return await query.exec();
+  }
+
 
   async deleteOne(filter: RootFilterQuery<TDocument>): Promise<DeleteResult> {
     return await this.model.deleteOne(filter)
