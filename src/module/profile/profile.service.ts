@@ -56,7 +56,46 @@ export class profileService {
 
   }
 
+  //======================== getProfilePatientForDoctor =====================
 
+ async getDoctorPatients(req: UserReq) {
+  const user = await this.userRepo.findById(req.user._id, "-password");
+
+  if (!user) {
+    throw new BadRequestException("user not found");
+  }
+
+  let patients: any[] = [];
+
+  if (req.user.role === UserRoleEnum.Doctor) {
+    patients = await this.userRepo.find({
+      filter: {
+        role: UserRoleEnum.Patient,
+        doctorId: user._id
+      },
+      select: "-password -provider"
+    });
+  }
+
+  else if (req.user.role === UserRoleEnum.Companion) {
+    patients = await this.userRepo.find({
+      filter: {
+        role: UserRoleEnum.Patient,
+        companionId: user._id
+      },
+      select: "-password -provider"
+    });
+  }
+
+  else {
+    throw new ForbiddenException("Not allowed");
+  }
+
+  return {
+    message: patients.length ? "Done" : "No patients found",
+    patients
+  };
+}
   //======================== getProfileId =====================
   async getprofileId(req: UserReq, params: profileDTO) {
     const user = await this.userRepo.findById(params.id, "-password");

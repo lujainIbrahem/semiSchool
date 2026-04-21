@@ -45,6 +45,18 @@ export class ProfileController {
         return this.profileService.getprofileId(req, params)
     }
 
+    //======================== getDoctorPatients =====================
+    @Auth({
+        roles: [UserRoleEnum.Doctor,UserRoleEnum.Companion],
+        typeToken: UserTokenTypeEnum.access
+    })
+    @Get("getDoctorPatients")
+    getDoctorPatients(      
+          @Req() req: UserReq,
+) {
+        
+        return this.profileService.getDoctorPatients(req)
+    }
 
     //======================== updateProfile =====================
 
