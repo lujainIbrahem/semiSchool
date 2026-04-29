@@ -152,6 +152,8 @@ export class UserService {
     return { message: "otp sent success" }
 
   }
+
+  
   //======================== confirmEmail =====================
 
   async confirmEmail(body: confirmEmailDTO) {
@@ -197,6 +199,7 @@ export class UserService {
 
     return { message: "email confirmed" };
   }
+
   //======================== login =====================
 
 
