@@ -6,7 +6,7 @@ import { flagType, GenderType, UserOtp, UserRoleEnum } from 'src/common/enums';
 import { Types } from 'mongoose';
 import { Compare } from 'src/utils';
 import { UserReq } from 'src/common/interfaces';
-import { generateOTP } from "src/common";
+import { emailTemplate, generateOTP, sendEmail } from "src/common";
 
 @Injectable()
 export class UserService {
@@ -19,18 +19,24 @@ export class UserService {
 
   ) { }
 
-  private async sendOtp(userId: Types.ObjectId) {
-    const otp = await generateOTP()
-    await this.OtpRepo.create({
-      type: UserOtp.confirmEmail,
-      code: otp.toString(),
-      createdBy: userId,
-      expireAt: new Date(Date.now() + 5 * 60 * 1000)//دقيقه
-    })
-    return otp
+private async sendOtp(user: any) {
+  const otp = generateOTP();
 
-  }
+  await this.OtpRepo.create({
+    type: UserOtp.confirmEmail,
+    code: otp.toString(),
+    createdBy: user._id,
+    expireAt: new Date(Date.now() + 5 * 60 * 1000),
+  });
 
+  await sendEmail({
+    to: user.email,
+    subject: "Confirm Email",
+    html: emailTemplate(otp.toString()),
+  });
+
+  return otp;
+}
   //======================== signUp =====================
 
   async signUp(body: signUpDTO) {
@@ -125,8 +131,7 @@ export class UserService {
     if (!user) {
       throw new ForbiddenException("User not created")
     }
-    await this.sendOtp(user._id);
-
+await this.sendOtp(user);
     return user
   }
 
@@ -148,7 +153,7 @@ export class UserService {
       throw new BadRequestException("otp already exist");
     }
 
-    await this.sendOtp(user._id)
+await this.sendOtp(user);
     return { message: "otp sent success" }
 
   }
