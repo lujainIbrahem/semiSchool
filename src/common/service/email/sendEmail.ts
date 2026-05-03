@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 });
 
   const info = await transporter.sendMail({
-    from: `"Shefaa App" <${process.env.SMTP_USER}>`,
+    from: `"Shefaa App" <appsafaa804@gmail.com>`,
     ...mailOptions,
   });
 
