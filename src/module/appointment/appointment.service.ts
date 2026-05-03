@@ -5,7 +5,7 @@ import { UserReq } from 'src/common/interfaces';
 import { availableTimeRepo } from '../Db/repositories/availableTime.repo';
 import { appointmentIdDTO, createAppointmentDTO } from './appointmentDTO';
 import { TokenService } from 'src/common/service/token.service';
-import { statusType } from 'src/common';
+import { statusType, UserRoleEnum } from 'src/common';
 
 @Injectable()
 export class appointmentService {
@@ -98,8 +98,56 @@ export class appointmentService {
 
   }
 
+  //================== getAppointmentPatient =====================
 
+  async getAppointmentPatient(req: UserReq) {
+    const user = await this.userRepo.findById(req.user._id)
+    if (!user || user?.role !== UserRoleEnum.Patient) {
+      throw new BadRequestException("this user not exist or this not patient")
+    }
+    const appointments = await this.appointmentRepo.find({
+      filter: { patientId: user._id, status: statusType.confirmed },
+      select: "-__v ",
+      options: { sort: { date: -1 } },
+      populate: [
+        {
+          path: "doctorId",
+          select: "fName lName price specialization phone address"
+        }, {
+          path: "availableId",
+          select: "start end"
+        }
+      ]
+    })
 
+    return { message: "Done", appointments };
+
+  }
+
+  //================== getAppointmentDoctor =====================
+
+  async getAppointmentDoctor(req: UserReq) {
+    const user = await this.userRepo.findById(req.user._id)
+    if (!user || user?.role !== UserRoleEnum.Doctor) {
+      throw new BadRequestException("this user not exist or this not doctor")
+    }
+    const appointments = await this.appointmentRepo.find({
+      filter: { doctorId: user._id, status: statusType.confirmed },
+      select: "-__v ",
+      populate: [
+        {
+          path: "patientId",
+          select: "fName lName currentMedication age phone address disease blood"
+        }, {
+          path: "availableId",
+          select: "start end isBooked"
+        }
+      ]
+    })
+
+    return { message: "Done", appointments };
+
+  }
 
 }
 

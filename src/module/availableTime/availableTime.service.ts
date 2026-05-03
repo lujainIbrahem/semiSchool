@@ -63,7 +63,7 @@ const endTime = new Date(`${date}T${end}:00`);
       filter: { date, isBooked: false },
         populate: {
         path:"doctorId",
-        select:"userName specialization email phone peice "
+        select:"fName lName specialization email phone peice "
       }
     });
     return { message: "Done", availableTime };
@@ -83,7 +83,7 @@ const endTime = new Date(`${date}T${end}:00`);
       filter: { date, isBooked: false,doctorId:user },
       populate: {
         path:"doctorId",
-        select:"userName specialization email phone peice "
+        select:"fName lName specialization email phone peice "
       }
     })
     return { message: "Done", availableTime };
