@@ -19,24 +19,24 @@ export class UserService {
 
   ) { }
 
-private async sendOtp(userId: Types.ObjectId, email: string) {
-  const otp = generateOTP().toString();
+  private async sendOtp(userId: Types.ObjectId, email: string) {
+    const otp = generateOTP().toString();
 
-  await this.OtpRepo.create({
-    code: otp,
-    createdBy: userId,
-    type: UserOtp.confirmEmail,
-    expireAt: new Date(Date.now() + 5 * 60 * 1000),
-  });
+    await this.OtpRepo.create({
+      code: otp,
+      createdBy: userId,
+      type: UserOtp.confirmEmail,
+      expireAt: new Date(Date.now() + 5 * 60 * 1000),
+    });
 
-  // send email via event
-  eventEmitter.emit(UserOtp.confirmEmail, {
-    email,
-    otp,
-  });
+    // send email via event
+    eventEmitter.emit(UserOtp.confirmEmail, {
+      email,
+      otp,
+    });
 
-  return otp;
-}
+    return otp;
+  }
   //======================== signUp =====================
 
   async signUp(body: signUpDTO) {
@@ -131,7 +131,7 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
     if (!user) {
       throw new ForbiddenException("User not created")
     }
-  await this.sendOtp(user._id,email);
+    await this.sendOtp(user._id, user.email);
 
     return user
   }
@@ -154,13 +154,14 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
       throw new BadRequestException("otp already exist");
     }
 
-  await this.sendOtp(user._id ,email);
+    await this.sendOtp(user._id, user.email);
     return { message: "otp sent success" }
 
   }
 
-  
+
   //======================== confirmEmail =====================
+
 
   async confirmEmail(body: confirmEmailDTO) {
     const { email, code } = body;
@@ -187,12 +188,7 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
       throw new BadRequestException("Invalid OTP data");
     }
 
-    if (
-      !(await Compare({
-        plainText: code,
-        hash: otpRecord.code,
-      }))
-    ) {
+    if (code !== otpRecord.code) {
       throw new BadRequestException("Invalid OTP");
     }
 
@@ -200,7 +196,10 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
     await user.save();
 
     await this.OtpRepo.deleteOne({
-      filter: { createdBy: user._id },
+      filter: {
+        createdBy: user._id,
+        type: UserOtp.confirmEmail, // مهم جدًا
+      },
     });
 
     return { message: "email confirmed" };
@@ -217,7 +216,7 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
     if (!user) {
       throw new BadRequestException("User not found");
     }
-    const role= user.role
+    const role = user.role
     if (!await Compare({ plainText: password, hash: user.password })) {
       throw new BadRequestException("Invalid password");
     }
@@ -242,7 +241,7 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
       }
     });
 
-    return { message: "Done", access_token, refresh_token ,role}
+    return { message: "Done", access_token, refresh_token, role }
   }
 
   //======================== revokeToken =====================
@@ -289,7 +288,7 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
     if (!user) {
       throw new BadRequestException("User not found");
     }
-  await this.sendOtp(user._id,email);
+    await this.sendOtp(user._id, user.email);
 
 
     return { message: "Done" }
