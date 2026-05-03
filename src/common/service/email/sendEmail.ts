@@ -2,14 +2,13 @@ import nodemailer from "nodemailer";
 
 export const sendEmail = async (mailOptions) => {
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT), // 587
-    secure: false, // ✅ false مع 587
+    host: process.env.SMTP_HOST, // smtp-relay.brevo.com
+    port: 587, // أو 465
+    secure: false,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
-    connectionTimeout: 10000,
   });
 
   const info = await transporter.sendMail({
@@ -17,9 +16,10 @@ export const sendEmail = async (mailOptions) => {
     ...mailOptions,
   });
 
-  console.log('✅ Email sent:', info.messageId);
+  console.log("EMAIL INFO:", info);
   return info.accepted.length > 0;
 };
-export const generateOTP = async () => {
-    return Math.floor(Math.random() * (999999 - 100000 + 1) + 100000)
-}
+
+export const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000);
+};

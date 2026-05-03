@@ -19,33 +19,18 @@ export class UserService {
 
   ) { }
 
-private async sendOtp(userId: Types.ObjectId, email: string) {
+private async sendOtp(userId: Types.ObjectId) {
   const otp = await generateOTP();
-  
-  // احفظ الـ OTP كـ string
+
   await this.OtpRepo.create({
     type: UserOtp.confirmEmail,
-    code: otp.toString(), // ✅ already string here
+    code: otp.toString(),
     createdBy: userId,
-    expireAt: new Date(Date.now() + 5 * 60 * 1000)
+    expireAt: new Date(Date.now() + 5 * 60 * 1000),
   });
-
-  // ابعت الإيميل
-  try {
-    await sendEmail({
-      to: email,
-      subject: "تأكيد البريد الإلكتروني - Shefaa App",
-      html: emailTemplate(otp.toString()), // ✅ حوله لـ string
-    });
-    console.log(`✅ OTP sent to ${email}`);
-  } catch (error) {
-    console.error(`❌ Failed to send OTP:`, error);
-    throw new BadRequestException('Failed to send OTP email');
-  }
 
   return otp;
 }
-
   //======================== signUp =====================
 
   async signUp(body: signUpDTO) {
@@ -140,7 +125,7 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
     if (!user) {
       throw new ForbiddenException("User not created")
     }
-  await this.sendOtp(user._id, user.email);
+  await this.sendOtp(user._id);
 
     return user
   }
@@ -163,7 +148,7 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
       throw new BadRequestException("otp already exist");
     }
 
-  await this.sendOtp(user._id, user.email);
+  await this.sendOtp(user._id);
     return { message: "otp sent success" }
 
   }
@@ -298,7 +283,7 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
     if (!user) {
       throw new BadRequestException("User not found");
     }
-  await this.sendOtp(user._id, user.email);
+  await this.sendOtp(user._id);
 
 
     return { message: "Done" }
