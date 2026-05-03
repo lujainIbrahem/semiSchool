@@ -9,13 +9,11 @@ export const sendEmail = async (mailOptions) => {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
-    tls: {
-      rejectUnauthorized: false, // 👈 رجعناها هنا عشان نكسر المشكلة
-    },
+ 
   });
 
   const info = await transporter.sendMail({
-from: '"Shefaa App" <appsafaa804@gmail.com>',
+    from: `"Shefaa App" <${process.env.SMTP_USER}>`,
     ...mailOptions,
   });
 

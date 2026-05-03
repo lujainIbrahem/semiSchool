@@ -3,21 +3,28 @@ import { emailTemplate, sendEmail } from "src/common"
 import { UserOtp } from "src/common/enums"
 
 export const eventEmitter= new EventEmitter()
- eventEmitter.on(UserOtp.confirmEmail,async(data)=>{
-  const { email,otp } = data
-  await sendEmail({
-    to:email,
-    subject:UserOtp.confirmEmail,
-    html:emailTemplate(otp)
-  })
- })
+eventEmitter.on(UserOtp.confirmEmail, async (data) => {
+  try {
+    const { email, otp } = data
+    await sendEmail({
+      to: email,
+      subject: UserOtp.confirmEmail,
+      html: emailTemplate(otp)
+    })
+  } catch (err) {
+    console.log("Email Error:", err.message)
+  }
+})
 
-
- eventEmitter.on(UserOtp.forgetPassword,async(data)=>{
-  const { email,otp } = data
-  await sendEmail({
-    to:email,
-    subject:UserOtp.forgetPassword,
-    html:emailTemplate(otp)
-  })
- })
+ eventEmitter.on(UserOtp.forgetPassword, async (data) => {
+  try {
+    const { email, otp } = data
+    await sendEmail({
+      to: email,
+      subject: UserOtp.forgetPassword,
+      html: emailTemplate(otp)
+    })
+  } catch (err) {
+    console.log("Email Error:", err.message)
+  }
+})
