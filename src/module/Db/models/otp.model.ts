@@ -27,29 +27,6 @@ export const OtpSchema = SchemaFactory.createForClass(Otp);
 OtpSchema.index({expireAt:1},{expireAfterSeconds:0})
 
 
- OtpSchema.pre("save",async function (this: HOtpDocument &{is_new:boolean , plain_code:string},next) {
-          if(this.isModified("code")){
-            this.plain_code =this.code
-            this.is_new = this.isNew
-            this.code = await Hash({plainText: this.code})
-            await this.populate([
-                {
-                path:"createdBy",
-                select:"email"
-                }
-            ])
-        }
-          next()
-        })
-   
-   
- OtpSchema.post("save",async function (doc,next) {
-    const that = this as HOtpDocument & {is_new:boolean , plain_code:string}
-    if(that.is_new){
-      eventEmitter.emit(doc.type , {otp:that.plain_code , email:(doc.createdBy as any).email})  
-    }
-        next()
-    })
    
 
 export const OtpModel = MongooseModule.forFeature([

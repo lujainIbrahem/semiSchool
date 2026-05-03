@@ -16,7 +16,7 @@ export const sendEmail = async (mailOptions: {
     const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
     sendSmtpEmail.sender = {
-      name: 'Shefaa App',
+      name: 'shefaaApp',
       email: 'appsafaa804@gmail.com', // sender verified in Brevo
     };
 
@@ -25,12 +25,8 @@ export const sendEmail = async (mailOptions: {
     sendSmtpEmail.htmlContent = mailOptions.html;
 
     await apiInstance.sendTransacEmail(sendSmtpEmail);
-
-    console.log('✅ Email sent successfully');
     return true;
-
   } catch (error) {
-    console.error('❌ Email Error:', error);
     return false;
   }
 };

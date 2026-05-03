@@ -4,7 +4,7 @@ import { availableTimeRepo, OtpRepo, revokeTokenRepo, UserRepo } from '../Db';
 import { confirmEmailDTO, forgetPasswordDTO, loginDTO, logOutDTO, resendOtpDTO, resetPasswordDTO, signUpDTO, updatePasswordDTO } from './signUpDTO';
 import { flagType, GenderType, UserOtp, UserRoleEnum } from 'src/common/enums';
 import { Types } from 'mongoose';
-import { Compare } from 'src/utils';
+import { Compare, eventEmitter } from 'src/utils';
 import { UserReq } from 'src/common/interfaces';
 import { emailTemplate, generateOTP, sendEmail } from "src/common";
 
@@ -18,23 +18,22 @@ export class UserService {
     private readonly availableTimeRepo: availableTimeRepo,
 
   ) { }
+
 private async sendOtp(userId: Types.ObjectId, email: string) {
-  const otp = generateOTP();
+  const otp = generateOTP().toString();
 
   await this.OtpRepo.create({
-    type: UserOtp.confirmEmail,
     code: otp,
     createdBy: userId,
+    type: UserOtp.confirmEmail,
     expireAt: new Date(Date.now() + 5 * 60 * 1000),
   });
 
-  await sendEmail({
-    to: email,
-    subject: 'Confirm your email - Shefaa App',
-    html: emailTemplate(otp),
+  // send email via event
+  eventEmitter.emit(UserOtp.confirmEmail, {
+    email,
+    otp,
   });
-
-  console.log('OTP sent:', otp);
 
   return otp;
 }
@@ -132,7 +131,7 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
     if (!user) {
       throw new ForbiddenException("User not created")
     }
-  await this.sendOtp(user._id, user.email);
+  await this.sendOtp(user._id,email);
 
     return user
   }
@@ -155,7 +154,7 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
       throw new BadRequestException("otp already exist");
     }
 
-  await this.sendOtp(user._id, user.email);
+  await this.sendOtp(user._id ,email);
     return { message: "otp sent success" }
 
   }
@@ -290,7 +289,7 @@ private async sendOtp(userId: Types.ObjectId, email: string) {
     if (!user) {
       throw new BadRequestException("User not found");
     }
-  await this.sendOtp(user._id, user.email);
+  await this.sendOtp(user._id,email);
 
 
     return { message: "Done" }
