@@ -48,23 +48,22 @@ export class ProfileController {
     //======================== getDoctorById  =====================
 
     @Get("getDoctorById/:id")
-    getDoctorById (
+    getDoctorById(
         @Param() params: profileDTO,
         @Req() req: UserReq
     ) {
-        return this.profileService.getDoctorById (req, params)
+        return this.profileService.getDoctorById(req, params)
     }
 
     //======================== getDoctorPatients =====================
     @Auth({
-        roles: [UserRoleEnum.Doctor,UserRoleEnum.Companion],
+        roles: [UserRoleEnum.Doctor, UserRoleEnum.Companion],
         typeToken: UserTokenTypeEnum.access
     })
     @Get("getDoctorPatients")
-    getDoctorPatients(      
-          @Req() req: UserReq,
-) {
-        
+    getDoctorPatients(
+        @Req() req: UserReq,
+    ) {
         return this.profileService.getDoctorPatients(req)
     }
 

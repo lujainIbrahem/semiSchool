@@ -21,9 +21,9 @@ import { authModule } from './module/auth/auth.module';
 CacheModule.register({
 
 }),
-MongooseModule.forRoot(process.env.MONGO_URL_ONLINE as string, {
+MongooseModule.forRoot(process.env.MONGO_URL as string, {
   onConnectionCreate: (connection: Connection) => {
-    connection.on('connected', () => console.log(`db is connected successfully on ${process.env.MONGO_URL_ONLINE} `));
+    connection.on('connected', () => console.log(`db is connected successfully on ${process.env.MONGO_URL} `));
     return connection;
   },
 }),
