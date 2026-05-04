@@ -98,57 +98,52 @@ export class appointmentService {
 
   }
 
-  //================== getAppointmentPatient =====================
+  //================== getAppointment =====================
 
-  async getAppointmentPatient(req: UserReq) {
+  async getAppointment(req: UserReq) {
     const user = await this.userRepo.findById(req.user._id)
-    if (!user || user?.role !== UserRoleEnum.Patient) {
+    if (!user) {
       throw new BadRequestException("this user not exist or this not patient")
     }
-    const appointments = await this.appointmentRepo.find({
-      filter: { patientId: user._id, status: statusType.confirmed },
-      select: "-__v ",
-      options: { sort: { date: -1 } },
-      populate: [
-        {
-          path: "doctorId",
-          select: "fName lName price specialization phone address"
-        }, {
-          path: "availableId",
-          select: "start end"
-        }
-      ]
-    })
-
-    return { message: "Done", appointments };
-
-  }
-
-  //================== getAppointmentDoctor =====================
-
-  async getAppointmentDoctor(req: UserReq) {
-    const user = await this.userRepo.findById(req.user._id)
-    if (!user || user?.role !== UserRoleEnum.Doctor) {
-      throw new BadRequestException("this user not exist or this not doctor")
+    if (user.role === UserRoleEnum.Patient) {
+      const appointments = await this.appointmentRepo.find({
+        filter: { patientId: user._id, status: statusType.confirmed },
+        select: "-__v ",
+        populate: [
+          {
+          path: 'doctorId',
+          select: 'fName lName specialization email phone price',
+            model:"User",
+          }, {
+            path: "availableId",
+            select: "start end isBooked"
+          }
+        ]
+      })
+      return { message: "Done", appointments };
     }
-    const appointments = await this.appointmentRepo.find({
-      filter: { doctorId: user._id, status: statusType.confirmed },
-      select: "-__v ",
-      populate: [
-        {
-          path: "patientId",
-          select: "fName lName currentMedication age phone address disease blood"
-        }, {
-          path: "availableId",
-          select: "start end isBooked"
-        }
-      ]
-    })
 
-    return { message: "Done", appointments };
+    else if (user.role === UserRoleEnum.Doctor) {
+      const appointments = await this.appointmentRepo.find({
+        filter: { doctorId: user._id, status: statusType.confirmed },
+        select: "-__v ",
+        populate: [
+          {
+            path: "patientId",
+            select: "fName lName currentMedication age phone address disease blood"
+          }, {
+            path: "availableId",
+            select: "start end isBooked"
+          }
+        ]
+      })
+
+      return { message: "Done", appointments };
+    }
 
   }
 
+  
 }
 
 

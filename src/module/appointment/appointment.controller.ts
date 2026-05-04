@@ -37,25 +37,14 @@ export class appointmentController {
     }
     //======================== getAppointmentPatient ====================
     @Auth({
-        roles: [UserRoleEnum.Patient],
+        roles: [UserRoleEnum.Doctor , UserRoleEnum.Patient],
         typeToken: UserTokenTypeEnum.access
     })
-    @Get("getAppointmentPatient")
+    @Get("getAppointment")
     getAppointmentPatient(
         @Req() req: UserReq,
     ) {
-        return this.appointmentService.getAppointmentPatient(req)
-    }
-    //======================== getAppointmentDoctor ====================
-    @Auth({
-        roles: [UserRoleEnum.Doctor],
-        typeToken: UserTokenTypeEnum.access
-    })
-    @Get("getAppointmentDoctor")
-    getAppointmentDoctor(
-        @Req() req: UserReq
-    ) {
-        return this.appointmentService.getAppointmentDoctor(req)
+        return this.appointmentService.getAppointment(req)
     }
 
 }
