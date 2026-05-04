@@ -22,7 +22,17 @@ export class appointmentService {
   //بظبط المواعيد
   async createAppointment(req: UserReq, body: createAppointmentDTO) {
     const { availableId } = body;
-    const patientId = req.user._id;
+   let patientId = req.user._id;
+
+if (req.user.role === UserRoleEnum.Companion) {
+  const companion = await this.userRepo.findById(req.user._id);
+
+  if (!companion?.patientId) {
+    throw new BadRequestException("No patient linked to this companion");
+  }
+
+  patientId = companion.patientId;
+}
     const available = await this.availableTimeRepo.findById(availableId);
     if (!available) throw new BadRequestException("Slot not found");
     if (available.isBooked) throw new BadRequestException("Slot already booked");
