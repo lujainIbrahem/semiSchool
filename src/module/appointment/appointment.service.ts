@@ -100,50 +100,73 @@ export class appointmentService {
 
   //================== getAppointment =====================
 
-  async getAppointment(req: UserReq) {
-    const user = await this.userRepo.findById(req.user._id)
-    if (!user) {
-      throw new BadRequestException("this user not exist or this not patient")
-    }
-    if (user.role === UserRoleEnum.Patient) {
-      const appointments = await this.appointmentRepo.find({
-        filter: { patientId: user._id, status: statusType.confirmed },
-        select: "-__v ",
-        populate: [
-          {
-          path: 'doctorId',
-          select: 'fName lName specialization email phone price',
-            model:"User",
-          }, {
-            path: "availableId",
-            select: "start end isBooked"
-          }
-        ]
-      })
-      return { message: "Done", appointments };
-    }
+async getAppointment(req: UserReq) {
+  const user = await this.userRepo.findById(req.user._id);
 
-    else if (user.role === UserRoleEnum.Doctor) {
-      const appointments = await this.appointmentRepo.find({
-        filter: { doctorId: user._id, status: statusType.confirmed },
-        select: "-__v ",
-        populate: [
-          {
-            path: "patientId",
-            select: "fName lName currentMedication age phone address disease blood"
-          }, {
-            path: "availableId",
-            select: "start end isBooked"
-          }
-        ]
-      })
-
-      return { message: "Done", appointments };
-    }
-
+  if (!user) {
+    throw new BadRequestException("user not found");
   }
 
-  
+  let patientId = user._id;
+
+  // Companion → map to patient
+  if (user.role === UserRoleEnum.Companion) {
+    if (!user.patientId) {
+      throw new BadRequestException("No patient linked to this companion");
+    }
+    patientId = user.patientId;
+  }
+
+  if (
+    user.role === UserRoleEnum.Patient ||
+    user.role === UserRoleEnum.Companion
+  ) {
+    const appointments = await this.appointmentRepo.find({
+      filter: {
+        patientId,
+        status: statusType.confirmed
+      },
+      select: "-__v",
+      populate: [
+        {
+          path: "doctorId",
+          select: "fName lName specialization email phone price"
+        },
+        {
+          path: "availableId",
+          select: "start end isBooked"
+        }
+      ]
+    });
+
+    return { message: "Done", appointments };
+  }
+
+  // DOCTOR
+  if (user.role === UserRoleEnum.Doctor) {
+    const appointments = await this.appointmentRepo.find({
+      filter: {
+        doctorId: user._id,
+        status: statusType.confirmed
+      },
+      select: "-__v",
+      populate: [
+        {
+          path: "patientId",
+          select: "fName lName currentMedication age phone address disease blood"
+        },
+        {
+          path: "availableId",
+          select: "start end isBooked"
+        }
+      ]
+    });
+
+    return { message: "Done", appointments };
+  }
+
+  throw new BadRequestException("Not allowed");
+}
 }
 
 

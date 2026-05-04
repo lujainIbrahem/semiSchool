@@ -37,7 +37,7 @@ export class appointmentController {
     }
     //======================== getAppointmentPatient ====================
     @Auth({
-        roles: [UserRoleEnum.Doctor , UserRoleEnum.Patient],
+        roles: [],
         typeToken: UserTokenTypeEnum.access
     })
     @Get("getAppointment")
