@@ -71,7 +71,7 @@ export class profileService {
       patients = await this.userRepo.find({
         filter: {
           role: UserRoleEnum.Patient,
-          doctorId: req.user._id
+          doctorId:user._id
         },
         select: "-password -provider"
       });
@@ -189,7 +189,7 @@ export class profileService {
       if (user.role !== UserRoleEnum.Patient) {
     throw new ForbiddenException("You can only update patients");
   }
-  
+
     if (req.user.role === UserRoleEnum.Doctor) {
       if (user.doctorId?.toString() !== req.user._id.toString()) {
         {
