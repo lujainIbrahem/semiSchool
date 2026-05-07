@@ -8,8 +8,7 @@ export class profileDTO {
   id: string
 }
 
-export class updateProfileDTO extends PartialType(OmitType(signUpDTO, ['password', 'cPassword',
-  'patientId', 'doctorId',  'companionId', 'experienceLevel', 'specialization', 'confirmed', 'role'] as const)) {
+export class updateProfileDTO extends PartialType(OmitType(signUpDTO, ['password', 'cPassword'] as const)) {
 
   @IsOptional()
   @ValidateIf((data) => !!data.newPassword)
@@ -28,4 +27,3 @@ export class updateProfileDTO extends PartialType(OmitType(signUpDTO, ['password
 }
 
 
-export class updateProfileIdDTO extends PickType(signUpDTO, ['blood' ,'currentMedication','disease'] as const) {}

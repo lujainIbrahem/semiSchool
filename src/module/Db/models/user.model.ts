@@ -1,8 +1,7 @@
 
 import { MongooseModule, Prop, Schema, SchemaFactory, Virtual } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { bloodType, GenderType, specializationType, userProvider, UserRoleEnum } from 'src/common/enums';
-import type { HOtpDocument } from './otp.model';
+import { GenderType } from 'src/common/enums';
 import { Hash } from 'src/utils';
 
 @Schema({ timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true }, strictQuery: true })
@@ -27,84 +26,27 @@ export class User {
   @Prop({ type: String, required: true, unique: true, trim: true })
   email: string;
 
-  @Prop({ type: String, trim: true, required: function(){
-    return this.provided === userProvider.system
-  } })
+  @Prop({ type: String, trim: true, required: true })
   password: string;
-  
-  
-  @Prop({ type: String, enum: userProvider, default: userProvider.system })
-  provider: string;
-
-
-  @Prop({ type: Boolean, default: false })
-  confirmed: boolean;
 
   @Prop({ type: String, enum: GenderType })
   gender: GenderType;
-
-  @Prop({ type: String, enum: UserRoleEnum, required: true })
-  role: UserRoleEnum;
-
-  @Prop({ type: String })
-  address: string;
-
-  @Prop({ type: String })
-  phone: string;
-
-  @Prop({ type: Date, default: Date.now })
-  changeCredentails: Date;
-
-
-  // Doctor fields
-  @Prop({ type: String, enum: specializationType })
-  specialization: specializationType;
-
-  @Prop({ type: Number })
-  price: number;
-
-  // Patient fields
-  @Prop({ type: String, enum: bloodType })
-  blood: bloodType;
-
-  @Prop({ type: String })
-  disease: string;
-
+  
   @Prop({ type: Number, min: 10, max: 80 })
   age: number;
 
-  @Prop({ type: String })
-  currentMedication: string;
+  @Prop({ type: String, required: true })
+  grade: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'User' })
-  doctorId: Types.ObjectId;
+  @Prop({ type:[String], required: true })
+  subjects: string[];
 
-  @Prop({ type: Types.ObjectId, ref: 'User' })
-  companionId: Types.ObjectId;
-
-  // Companion fields
-  @Prop({ type: String })
-  relationPatient: string;
-
-  @Prop({ type: String })
-  experienceLevel: string;
-
-  @Prop({ type: Types.ObjectId, ref: 'User' })
-  patientId: Types.ObjectId;
-
-
-  @Virtual()
-  otp: HOtpDocument[]
+    @Prop({ type:[ String], required: true })
+  hobbies: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
 export type HUserDocument = HydratedDocument<User>
-
-UserSchema.virtual("otp", {
-  ref: "Otp",
-  localField: "_id",
-  foreignField: "createdBy"
-})
 
 export const UserModel = MongooseModule.forFeatureAsync([
   {

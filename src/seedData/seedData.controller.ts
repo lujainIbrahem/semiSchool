@@ -9,7 +9,7 @@ export class seedDataController {
    
  @Post("seedAll")
 async seedAll() {
-  return await this.seedDataService.seedDoctors();
+  return await this.seedDataService.seedStudents();
 }
 
 }

@@ -7,10 +7,8 @@ import { Connection } from 'mongoose';
 import { CacheModule } from '@nestjs/cache-manager';
 import { profileModule } from './module/profile/profile.module';
 import { UserModule } from './module/user/user.module';
-import { availableTimeModule } from './module/availableTime/availableTime.module';
-import { appointmentModule } from './module/appointment/appointment.module';
+
 import { seedDataModule } from './seedData/seedData.module';
-import { authModule } from './module/auth/auth.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -21,19 +19,16 @@ import { authModule } from './module/auth/auth.module';
 CacheModule.register({
 
 }),
-MongooseModule.forRoot(process.env.MONGO_URL_ONLINE as string, {
+MongooseModule.forRoot(process.env.MONGO_URL as string, {
   onConnectionCreate: (connection: Connection) => {
-    connection.on('connected', () => console.log(`db is connected successfully on ${process.env.MONGO_URL_ONLINE} `));
+    connection.on('connected', () => console.log(`db is connected successfully on ${process.env.MONGO_URL} `));
     return connection;
   },
 }),
 
 UserModule,
 profileModule,
-availableTimeModule,
-appointmentModule,
 seedDataModule,
-authModule
 
 
 

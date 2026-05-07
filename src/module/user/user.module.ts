@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
-import { availableTimeModel, OtpModel, revokeTokenModel, UserModel } from '../Db/models';
-import { availableTimeRepo, OtpRepo, revokeTokenRepo, UserRepo } from '../Db';
+import {  UserModel } from '../Db/models';
+import {   UserRepo } from '../Db';
 import { JwtService } from '@nestjs/jwt';
-import { TokenService } from 'src/common/service/token.service';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
 @Module({
-  imports:[UserModel,OtpModel,revokeTokenModel,availableTimeModel],
+  imports:[UserModel],
   controllers:[UserController],
-  providers: [UserService,UserRepo,OtpRepo,revokeTokenRepo,TokenService,JwtService,availableTimeRepo],
+  providers: [UserService,UserRepo],
 })
 
 export class UserModule {}

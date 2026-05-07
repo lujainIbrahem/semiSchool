@@ -1,15 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ProfileController } from './profile.controller';
-import { OtpModel, revokeTokenModel, UserModel } from '../Db/models';
-import { OtpRepo, revokeTokenRepo, UserRepo } from '../Db';
-import { JwtService } from '@nestjs/jwt';
-import { TokenService } from 'src/common/service/token.service';
+import { UserModel } from '../Db/models';
+import {  UserRepo } from '../Db';
 import { profileService } from './profile.service';
 
 @Module({
-  imports:[UserModel,OtpModel,revokeTokenModel],
+  imports:[UserModel],
   controllers:[ProfileController],
-  providers: [profileService,UserRepo,OtpRepo,revokeTokenRepo,TokenService,JwtService],
+  providers: [profileService,UserRepo],
 })
 
 export class profileModule {}

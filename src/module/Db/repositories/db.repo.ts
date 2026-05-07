@@ -9,36 +9,6 @@ export class DbRepo<TDocument> {
     return this.model.create(data)
   }
 
-
-
-
-  async paginate(
-    {
-      filter,
-      query,
-      select,
-      options
-    }: {
-      filter: RootFilterQuery<TDocument>,
-      query: { page: number, limit: number },
-      select?: ProjectionType<TDocument>,
-      options?: QueryOptions<TDocument>
-    }
-  ) {
-    let { page, limit } = query
-    if (page < 0) page = 1
-    page = page * 1 || 1
-    const skip = (page - 1) * limit
-    const finalOptions = {
-      ...options, skip, limit
-    }
-    const count = await this.model.countDocuments({ deletedAt: { $exists: false } })
-    const numberOfPages = Math.ceil(count / limit)
-    const document = await this.model.find(filter, select, finalOptions)
-
-    return { document, numberOfPages, cuttentPage: page, countDocument: count }
-  }
-
   findOne(
     filter: RootFilterQuery<TDocument>,
     projection?: ProjectionType<TDocument>,
@@ -68,15 +38,7 @@ export class DbRepo<TDocument> {
     return await this.model.findOneAndUpdate(filter, update, { new: true })
   }
 
-  async findOneAndDelete(
-    {
-      filter
-    }: {
-      filter: RootFilterQuery<TDocument>
-    }
-  ): Promise<TDocument | null> {
-    return await this.model.findOneAndDelete(filter)
-  }
+
 
   async findById(
     id: Types.ObjectId | string,
@@ -106,32 +68,6 @@ export class DbRepo<TDocument> {
   }
 
 
-  async deleteOne(filter: RootFilterQuery<TDocument>): Promise<DeleteResult> {
-    return await this.model.deleteOne(filter)
-  }
-  // جوه كلاس DbRepo
-  async createMany(data: any[]) {
-    return await this.model.insertMany(data);
-  }
-
-  async findByIdAndUpdate({
-  id,
-  update,
-  options,
-}: {
-  id: Types.ObjectId | string;
-  update: UpdateQuery<TDocument>;
-  options?: QueryOptions<TDocument>;
-}): Promise<TDocument | null> {
-
-  return this.model.findByIdAndUpdate(
-    id,
-    update,
-    {
-      ...options,
-      new: true,          // دايمًا يرجع بعد التحديث
-    }
-  );
-}
-
+ 
+ 
 }
