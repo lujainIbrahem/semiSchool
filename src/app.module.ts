@@ -19,9 +19,9 @@ import { seedDataModule } from './seedData/seedData.module';
 CacheModule.register({
 
 }),
-MongooseModule.forRoot(process.env.MONGO_URL as string, {
+MongooseModule.forRoot(process.env.MONGO_URL_online as string, {
   onConnectionCreate: (connection: Connection) => {
-    connection.on('connected', () => console.log(`db is connected successfully on ${process.env.MONGO_URL} `));
+    connection.on('connected', () => console.log(`db is connected successfully on ${process.env.MONGO_URL_online} `));
     return connection;
   },
 }),
