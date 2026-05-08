@@ -18,7 +18,7 @@ export class User {
     },
     set(v) {
       this.fName = v.split(' ')[0]
-      this.lName = v.split(' ')[0]
+      this.lName = v.split(' ')[1]
     }
   })
   userName: string;

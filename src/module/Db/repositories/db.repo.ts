@@ -16,30 +16,6 @@ export class DbRepo<TDocument> {
     return this.model.findOne(filter, projection, options);
   }
 
-
-  async updateOne(
-    filter: RootFilterQuery<TDocument>,
-    update: UpdateQuery<TDocument>,
-  ): Promise<UpdateWriteOpResult> {
-    return await this.model.updateOne(filter, update)
-  }
-
-  async findOneAndUpdate(
-    {
-      filter,
-      update,
-      options
-    }: {
-      filter: RootFilterQuery<TDocument>,
-      update: UpdateQuery<TDocument>,
-      options?: QueryOptions<TDocument>
-    }
-  ): Promise<TDocument | null> {
-    return await this.model.findOneAndUpdate(filter, update, { new: true })
-  }
-
-
-
   async findById(
     id: Types.ObjectId | string,
     projection?: ProjectionType<TDocument>,
@@ -51,21 +27,6 @@ export class DbRepo<TDocument> {
     return await query.exec();
   }
 
-  async find({
-    filter,
-    select,
-    options,
-    populate
-  }: {
-    filter: RootFilterQuery<TDocument>,
-    select?: ProjectionType<TDocument>,
-    options?: QueryOptions<TDocument>,
-    populate?: string | string[] | any
-  }) {
-    let query = this.model.find(filter, select, options);
-      if (populate) query = query.populate(populate);
-    return await query.exec();
-  }
 
 
  
