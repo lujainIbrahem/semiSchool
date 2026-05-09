@@ -7,7 +7,6 @@ import { Connection } from 'mongoose';
 import { CacheModule } from '@nestjs/cache-manager';
 import { profileModule } from './module/profile/profile.module';
 import { UserModule } from './module/user/user.module';
-
 import { seedDataModule } from './seedData/seedData.module';
 
 @Module({
